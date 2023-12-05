@@ -1,16 +1,22 @@
 import * as THREE from 'three'
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSpring, animated } from '@react-spring/three';
-import React, { useRef, useEffect } from 'react';
-import { ThreeElements, useLoader } from '@react-three/fiber';
+import React, { useRef, useEffect, useState } from 'react';
+import glsl from "babel-plugin-glsl/macro";
+import { ThreeElements, useLoader, extend } from '@react-three/fiber';
+import { shaderMaterial } from "@react-three/drei"
 
-interface ThreeJsStripeProps {
+
+
+interface ImageMeshProps {
   base64Texture: string;
   meshProps: ThreeElements['mesh'];
 }
 
+function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
+  const [width, setWidth] = useState<number>(1);
+  const [height, setHeight] = useState<number>(1);
 
-function ThreeJsStripe({meshProps, base64Texture }: ThreeJsStripeProps) {
   const [{ position }, api] = useSpring<any>(() =>({
     from: meshProps.position,
     position: meshProps.position,
@@ -20,8 +26,18 @@ function ThreeJsStripe({meshProps, base64Texture }: ThreeJsStripeProps) {
     api.start({ to: {position: meshProps.position}})
   }, [meshProps, api])
  
+  useEffect(() => {
+    async function computeSize() {
+      let img = new Image();
+      img.src = base64Texture;
+      await img.decode();
+      setWidth(img.width/img.height);
+      setHeight(img.height/img.width);
+    }
+    computeSize();
+  }, [base64Texture]);
+
   const mesh = useRef<THREE.Mesh>(null!);
-  //useFrame((state, delta) => (mesh.current.rotation.x += delta));
   const [texture] = useLoader(TextureLoader, [
     base64Texture
   ]);
@@ -39,8 +55,8 @@ function ThreeJsStripe({meshProps, base64Texture }: ThreeJsStripeProps) {
     >
       <boxGeometry args={[1, 1, 0.1]} />
       <meshStandardMaterial map={texture} />
-    </animated.mesh>
+      </animated.mesh>
   )
 }
 
-export default ThreeJsStripe;
+export default ImageMesh;
