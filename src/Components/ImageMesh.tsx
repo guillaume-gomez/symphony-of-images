@@ -8,20 +8,20 @@ import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
 import { shaderMaterial } from "@react-three/drei"
 
 const ColorShiftMaterial = shaderMaterial(
-  { uTime: 0, color: new THREE.Color(0.2, 0.0, 0.1), uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0] },
+  { uTime: 0, uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0] },
   // vertex shader
   /*glsl*/`
-
-
     varying vec2 vUv;
     uniform float uTime;
-    uniform float frequencies[5];
-    uniform vec2 uResolution;
+    uniform sampler2D uTexture;
+    uniform float frequencies[6];
 
     void main() {
       vUv = uv;
+      vec3 texture = texture2D(uTexture, uv).rgb;
+
       float numberOfFrequencies = 6.0;
-      int frequencyIndex = int(floor(numberOfFrequencies * uv.x));
+      int frequencyIndex = int(floor(numberOfFrequencies * texture.r));
       float frequency = frequencies[frequencyIndex];
 
       vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -34,8 +34,6 @@ const ColorShiftMaterial = shaderMaterial(
   `,
   // fragment shader
   /*glsl*/`
-    uniform float uTime;
-    uniform vec3 color;
     uniform sampler2D uTexture;
     varying vec2 vUv;
 
@@ -105,7 +103,7 @@ function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
       /*{...meshProps}*/
     >
       <boxGeometry args={[width, height, 0.1, 256, 256, 1]} />
-      <colorShiftMaterial color="hotpink" wireframe={true} ref={refMaterial} uTexture={texture} />
+      <colorShiftMaterial wireframe={true} ref={refMaterial} uTexture={texture} />
 
       </animated.mesh>
   )
