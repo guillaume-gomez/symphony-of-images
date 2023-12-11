@@ -29,7 +29,7 @@ function App() {
       <h1>Vite + React</h1>
       <AudioPermission onChange={() =>  console.log("ghjghgh")} />
       {
-        !imageBase64 ? <p>Alice d'amour d'amour coeur coeur</p> : <ThreeJSRendering depth={3} backgroundColor="grey" imageTexture={imageBase64} />
+        !imageBase64 ? <p>Ya rien a afficher</p> : <ThreeJSRendering depth={3} backgroundColor="grey" imageTexture={imageBase64} width={800} height={800} />
       }
       <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
     </>

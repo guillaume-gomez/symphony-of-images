@@ -1,4 +1,4 @@
-import React, { useRef , useMemo } from 'react';
+import React, { useRef , useMemo, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stage } from '@react-three/drei';
 import ImageMesh from "./ImageMesh"
@@ -8,13 +8,12 @@ interface ThreejsRenderingProps {
   depth: number;
   backgroundColor: string;
   imageTexture: string;
+  width: number;
+  height: number;
 }
 
-const width = "75%";
-const height
- = "75%";
 
-function ThreejsRendering({ depth, backgroundColor, imageTexture } : ThreejsRenderingProps) {
+function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   return (

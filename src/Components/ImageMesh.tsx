@@ -4,8 +4,9 @@ import { useSpring, animated } from '@react-spring/three';
 import React, { useRef, useEffect, useState } from 'react';
 import glsl from "babel-plugin-glsl/macro";
 import { useInterval } from 'usehooks-ts';
+import useAudioContext from "./Hooks/useAudioContext";
 import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
-import { shaderMaterial } from "@react-three/drei"
+import { shaderMaterial } from "@react-three/drei";
 
 const ColorShiftMaterial = shaderMaterial(
   { uTime: 0, uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0] },
@@ -14,18 +15,20 @@ const ColorShiftMaterial = shaderMaterial(
     varying vec2 vUv;
     uniform float uTime;
     uniform sampler2D uTexture;
-    uniform float frequencies[6];
+    uniform float frequencies[256];
 
     void main() {
       vUv = uv;
       vec3 texture = texture2D(uTexture, uv).rgb;
 
-      float numberOfFrequencies = 6.0;
-      int frequencyIndex = int(floor(numberOfFrequencies * texture.r));
+      float numberOfFrequencies = 255.0;
+      int frequencyIndex = int(floor(numberOfFrequencies * texture.g ) );
       float frequency = frequencies[frequencyIndex];
 
       vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-      modelPosition.z += frequency;
+      // remove value < 50.0
+      float normalisedFrequency = frequency > 50.0 ? (frequency / 255.0) : 0.0;
+      modelPosition.z += normalisedFrequency;
       vec4 viewPosition = viewMatrix * modelPosition;
       vec4 projectedPosition = projectionMatrix * viewPosition;
 
@@ -55,14 +58,6 @@ interface ImageMeshProps {
 function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
-  const [{ position }, api] = useSpring<any>(() =>({
-    from: meshProps.position,
-    position: meshProps.position,
-    config: { mass: 0.5, tension: 500, friction: 150, precision: 0.0001 }
-  }))
-  useEffect(() => {
-    api.start({ to: {position: meshProps.position}})
-  }, [meshProps, api])
 
   useEffect(() => {
     async function computeSize() {
@@ -73,9 +68,9 @@ function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
       setHeight(img.height/img.width);
     }
     computeSize();
+    handleAudioPlay();
   }, [base64Texture]);
 
-  const mesh = useRef<THREE.Mesh>(null!);
   const refMaterial = useRef();
   useFrame(({ clock }) => (refMaterial.current.uTime = clock.getElapsedTime()));
 
@@ -83,29 +78,26 @@ function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
     base64Texture
   ]);
 
-   useInterval(
-    () => {
-      // Your custom logic here
-      refMaterial.current.frequencies = [Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random()];
-    },
-    // Delay in milliseconds or null to stop it
-    1000
-  )
+  const { handleAudioPlay } = useAudioContext({
+    frequencySize: 256,
+    onUpdate(data) {
+     refMaterial.current.frequencies = data;
+    }
+  });
 
   if(!texture) {
     return <></>;
   }
 
   return (
-    <animated.mesh
-      position={position as any}
-      ref={mesh}
+    <mesh
+      position={[0,0,0]}
       /*{...meshProps}*/
     >
       <boxGeometry args={[width, height, 0.1, 256, 256, 1]} />
-      <colorShiftMaterial wireframe={true} ref={refMaterial} uTexture={texture} />
+      <colorShiftMaterial wireframe={true}  side={THREE.BackSide}  ref={refMaterial} uTexture={texture} />
 
-      </animated.mesh>
+      </mesh>
   )
 }
 
