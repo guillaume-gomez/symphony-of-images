@@ -36,7 +36,12 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
             position={[
             0, 0, 0]}
           >
-            <ImageMesh base64Texture={imageTexture} meshProps={{position: [0,0,0]}} />
+            <ImageMesh
+              base64Texture={imageTexture}
+              meshProps={{position: [0,0,0]}}
+              amplitude={1.0}
+              filter={10.0}
+            />
           </group>
           <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 1.9} makeDefault />
         </Stage>

@@ -19,7 +19,7 @@ function useAudioContext({ frequencySize, onUpdate } : useAudioContextProps) {
       if (!source.current) {
         source.current = audioContext.createMediaStreamSource(stream);
         source.current.connect(analyzer.current);
-        analyzer.current.connect(audioContext.destination);
+        //analyzer.current.connect(audioContext.destination);
         analyzer.current.fftSize = frequencySize;
 
         update();

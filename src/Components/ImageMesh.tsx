@@ -9,26 +9,32 @@ import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
 import { shaderMaterial } from "@react-three/drei";
 
 const ColorShiftMaterial = shaderMaterial(
-  { uTime: 0, uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0] },
+  { uTime: 0, uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0], uAmplitude: 1.0, uFilter: 50.0 },
   // vertex shader
   /*glsl*/`
     varying vec2 vUv;
     uniform float uTime;
     uniform sampler2D uTexture;
     uniform float frequencies[256];
+    uniform float uAmplitude;
+    uniform float uFilter;
 
     void main() {
       vUv = uv;
       vec3 texture = texture2D(uTexture, uv).rgb;
 
-      float numberOfFrequencies = 255.0;
-      int frequencyIndex = int(floor(numberOfFrequencies * texture.g ) );
+      float gray = (texture.r * 0.3 + texture.g * 0.59 + texture.b * 0.11);
+
+      float numberOfFrequencies = 256.0;
+      int frequencyIndex = int(floor(numberOfFrequencies * gray ) );
+
       float frequency = frequencies[frequencyIndex];
 
       vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-      // remove value < 50.0
-      float normalisedFrequency = frequency > 50.0 ? (frequency / 255.0) : 0.0;
-      modelPosition.z += normalisedFrequency;
+
+      float normalisedFrequency = frequency > uFilter ? (frequency / 255.0) : 0.0;
+      modelPosition.z += normalisedFrequency * uAmplitude;
+
       vec4 viewPosition = viewMatrix * modelPosition;
       vec4 projectedPosition = projectionMatrix * viewPosition;
 
@@ -53,9 +59,11 @@ extend({ ColorShiftMaterial })
 interface ImageMeshProps {
   base64Texture: string;
   meshProps: ThreeElements['mesh'];
+  filter: float;
+  amplitude: float;
 }
 
-function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
+function ImageMesh({meshProps, base64Texture, filter, amplitude }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -81,7 +89,7 @@ function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
   const { handleAudioPlay } = useAudioContext({
     frequencySize: 256,
     onUpdate(data) {
-     refMaterial.current.frequencies = data;
+      refMaterial.current.frequencies = data;
     }
   });
 
@@ -95,8 +103,14 @@ function ImageMesh({meshProps, base64Texture }: ImageMeshProps) {
       /*{...meshProps}*/
     >
       <boxGeometry args={[width, height, 0.1, 256, 256, 1]} />
-      <colorShiftMaterial wireframe={true}  side={THREE.BackSide}  ref={refMaterial} uTexture={texture} />
-
+      <colorShiftMaterial
+        wireframe={true}
+        side={THREE.BackSide}
+        ref={refMaterial}
+        uTexture={texture}
+        uAmplitude={1.0}
+        uFilter={100.0}
+      />
       </mesh>
   )
 }
