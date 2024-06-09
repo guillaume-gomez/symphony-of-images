@@ -13,12 +13,13 @@ extend({ ColorShiftMaterial })
 
 interface ImageMeshProps {
   base64Texture: string;
-  meshProps: ThreeElements['mesh'];
   filter: float;
   amplitude: float;
+  wireframe: boolean;
+  meshSize: number;
 }
 
-function ImageMesh({meshProps, base64Texture, filter, amplitude }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -35,7 +36,6 @@ function ImageMesh({meshProps, base64Texture, filter, amplitude }: ImageMeshProp
   }, [base64Texture]);
 
   const refMaterial = useRef();
-  useFrame(({ clock }) => (refMaterial.current.uTime = clock.getElapsedTime()));
 
   const [texture] = useLoader(TextureLoader, [
     base64Texture
@@ -52,19 +52,18 @@ function ImageMesh({meshProps, base64Texture, filter, amplitude }: ImageMeshProp
     return <></>;
   }
 
+
   return (
     <mesh
       position={[0,0,0]}
-      /*{...meshProps}*/
     >
-      <boxGeometry args={[width, height, 0.1, 256, 256, 1]} />
+      <boxGeometry args={[width, height, 0.01, meshSize, meshSize, 1]} />
       <colorShiftMaterial
-        wireframe={true}
-        side={THREE.BackSide}
+        wireframe={wireframe}
         ref={refMaterial}
         uTexture={texture}
-        uAmplitude={1.0}
-        uFilter={100.0}
+        uAmplitude={amplitude}
+        uFilter={filter}
       />
       </mesh>
   )

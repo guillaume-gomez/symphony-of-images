@@ -1,11 +1,10 @@
 import { shaderMaterial } from "@react-three/drei";
 
 const ColorShiftMaterial = shaderMaterial(
-  { uTime: 0, uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0], uAmplitude: 1.0, uFilter: 50.0 },
+  { uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0], uAmplitude: 1.0, uFilter: 50.0 },
   // vertex shader
   /*glsl*/`
     varying vec2 vUv;
-    uniform float uTime;
     uniform sampler2D uTexture;
     uniform float frequencies[256];
     uniform float uAmplitude;

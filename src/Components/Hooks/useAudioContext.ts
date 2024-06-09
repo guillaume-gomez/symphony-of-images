@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 interface useAudioContextProps {
   frequencySize: number;
@@ -10,8 +10,14 @@ function useAudioContext({ frequencySize, onUpdate } : useAudioContextProps) {
   const source = useRef();
   const analyzer = useRef();
 
-  function handleAudioPlay() {
+  useEffect(() => {
+    return () => cancelAnimationFrame(audioRef.current);
+  }, []);
 
+  function handleAudioPlay() {
+    if(audioRef.current && !audioRef.current.paused) {
+      return;
+    }
     navigator.mediaDevices.getUserMedia({video: false, audio: true}).then( stream => {
       window.localStream = stream;
       let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -21,10 +27,8 @@ function useAudioContext({ frequencySize, onUpdate } : useAudioContextProps) {
         source.current.connect(analyzer.current);
         //analyzer.current.connect(audioContext.destination);
         analyzer.current.fftSize = frequencySize;
-
         update();
       }
-
     });
   }
 
