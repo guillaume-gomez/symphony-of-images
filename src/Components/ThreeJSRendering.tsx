@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
-import { OrbitControls, Stage } from '@react-three/drei';
+import { Mesh } from "three";
+import { Stage, CameraControls } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 import Range from "./Range";
 
@@ -22,6 +23,30 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
   const [filter, setFilter] = useState<number>(10.0);
   const [meshSize, setMeshSize] = useState<number>(256);
   const [wireframe, setWireframe] = useState<boolean>(true);
+  const cameraControlRef = useRef<CameraControls|null>(null);
+  const [maxDistance, setMaxDistance] = useState<number>(500);
+  const meshRef = useRef<Mesh>(null);
+
+  useEffect(() => {
+    centerCamera(meshRef.current)
+  }, [imageTexture, meshRef])
+
+  async function centerCamera(mesh : InstancedMesh) {
+    if(cameraControlRef.current) {
+      cameraControlRef.current.maxDistance = 500;
+      await cameraControlRef.current.setLookAt(
+        0, 0, 1,
+        0,0, 0,
+        false
+      );
+      await cameraControlRef.current.fitToBox(mesh, true,
+        { paddingLeft: 1, paddingRight: 1, paddingBottom: 2, paddingTop: 2 }
+      );
+      let distanceCamera = new Vector3();
+      cameraControlRef.current.getPosition(distanceCamera, false);
+      setMaxDistance(distanceCamera.z + 5.0);
+    }
+  }
 
 
   return (
@@ -86,9 +111,18 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
               amplitude={amplitude}
               meshSize={meshSize}
               filter={filter}
+              meshRef={meshRef}
             />
           </group>
-          <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 1.9} makeDefault />
+          <CameraControls
+              minPolarAngle={0}
+              maxPolarAngle={Math.PI / 1.9}
+              minAzimuthAngle={-0.55}
+              maxAzimuthAngle={0.55}
+              makeDefault
+              maxDistance={maxDistance}
+              ref={cameraControlRef}
+            />
         </Stage>
       </Canvas>
     </div>
