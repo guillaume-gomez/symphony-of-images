@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
-import { OrbitControls, Stage } from '@react-three/drei';
+import { OrbitControls, Stage, GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 import Range from "./Range";
 
@@ -89,6 +89,9 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
             />
           </group>
           <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 1.9} makeDefault />
+          <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
+            <GizmoViewport labelColor="white" axisHeadScale={1} />
+          </GizmoHelper>
         </Stage>
       </Canvas>
     </div>

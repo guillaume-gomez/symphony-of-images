@@ -57,14 +57,20 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
     <mesh
       position={[0,0,0]}
     >
-      <boxGeometry args={[width, height, 0.01, meshSize, meshSize, 1]} />
+      <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />
+      <meshStandardMaterial attach="material-0" color="brown" />
+      <meshStandardMaterial attach="material-1" color="red" />
+      <meshStandardMaterial attach="material-2" color="green" />
+      <meshStandardMaterial attach="material-3" color="purple" />
       <colorShiftMaterial
+        attach="material-4"
         wireframe={wireframe}
         ref={refMaterial}
         uTexture={texture}
         uAmplitude={amplitude}
         uFilter={filter}
       />
+      <meshStandardMaterial attach="material-5" color="orange" />*/}
       </mesh>
   )
 }
