@@ -3,25 +3,23 @@ import { useRef, useEffect } from "react";
 interface useAudioContextProps {
   frequencySize: number;
   onUpdate: () => void;
-  plugSource: (analyzer: any) => void;
 }
 
-function useAudioContext({ frequencySize, onUpdate, plugSource } : useAudioContextProps) {
+function useAudioContext({ frequencySize, onUpdate } : useAudioContextProps) {
   const audioRef = useRef();
   const source = useRef();
-  //const audioContext = useRef(new (window.AudioContext || window.webkitAudioContext)());
   const analyzer = useRef();
 
   useEffect(() => {
     return () => cancelAnimationFrame(audioRef.current);
   }, []);
 
-  async function handleAudioPlay() {
+  function handleAudioPlay() {
     if(audioRef.current && !audioRef.current.paused) {
       return;
     }
     navigator.mediaDevices.getUserMedia({video: false, audio: true}).then( stream => {
-    window.localStream = stream;
+      window.localStream = stream;
       let audioContext = new (window.AudioContext || window.webkitAudioContext)();
       analyzer.current = audioContext.createAnalyser();
       if (!source.current) {
@@ -31,8 +29,7 @@ function useAudioContext({ frequencySize, onUpdate, plugSource } : useAudioConte
         analyzer.current.fftSize = frequencySize;
         update();
       }
-    })
-
+    });
   }
 
   function update() {
