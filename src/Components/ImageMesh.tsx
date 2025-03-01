@@ -28,11 +28,14 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
       let img = new Image();
       img.src = base64Texture;
       await img.decode();
-      setWidth(img.width/img.height);
+      setWidth(1);
       setHeight(img.height/img.width);
     }
     computeSize();
-    handleAudioPlay();
+    const audio = new Audio();
+    audio.src="/Oklou - obvious.mp3";
+    audio.autoplay=true
+    handleAudioPlay(audio);
   }, [base64Texture]);
 
   const refMaterial = useRef();
@@ -58,10 +61,10 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
       position={[0,0,0]}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />
-      <meshStandardMaterial attach="material-0" color="brown" />
-      <meshStandardMaterial attach="material-1" color="red" />
-      <meshStandardMaterial attach="material-2" color="green" />
-      <meshStandardMaterial attach="material-3" color="purple" />
+      <meshStandardMaterial attach="material-0" color="brown" emissive="#000000" roughness={0} metalness={0} />
+      <meshStandardMaterial attach="material-1" color="red" emissive="#000000" roughness={0} metalness={0} />
+      <meshStandardMaterial attach="material-2" color="green" emissive="#000000" roughness={0} metalness={0} />
+      <meshStandardMaterial attach="material-3" color="purple" emissive="#000000" roughness={0} metalness={0} />
       <colorShiftMaterial
         attach="material-4"
         wireframe={wireframe}
@@ -70,7 +73,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
         uAmplitude={amplitude}
         uFilter={filter}
       />
-      <meshStandardMaterial attach="material-5" color="orange" />*/}
+      <meshStandardMaterial attach="material-5" color="orange" />
       </mesh>
   )
 }
