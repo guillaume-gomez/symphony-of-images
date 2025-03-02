@@ -5,6 +5,8 @@ import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
 import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
+import ColorPicker from "./Components/ColorPicker";
+import Mp3Player from "./Components/Mp3Player";
 
 
 import './App.css'
@@ -16,7 +18,7 @@ function App() {
   const [filter, setFilter] = useState<number>(10.0);
   const [meshSize, setMeshSize] = useState<number>(256);
   const [wireframe, setWireframe] = useState<boolean>(true);
-
+  const [background, setBackground] = useState<string>("#3D3E61");
   const konami = useKonamiCode();
 
 
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <>
-      <h1>{konami ? "KONAMI" : "Vite + React"}</h1>
+      <h1>{konami ? "KONAMI" : "Vo Image"}</h1>
       <div className="card bg-base-100 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Settings</h2>
@@ -56,6 +58,12 @@ function App() {
             step={0.5}
             onChange={setFilter}
           />
+          <ColorPicker
+            label="Background color"
+            value={background}
+            onChange={(value: string) => setBackground(value)}
+          />
+          <Mp3Player onChange={(audio) => console.log("jfkdjfkd")} />
           <div className="form-control">
             <label className="label cursor-pointer">
               <span className="label-text">Wireframe</span>
@@ -69,10 +77,8 @@ function App() {
         !imageBase64 ? 
           <p>Nothing to display</p> :
           <ThreeJSRendering
-            backgroundColor="#3D3E61"
+            backgroundColor={background}
             imageTexture={imageBase64}
-            width={"100%"}
-            height={800}
             amplitude={amplitude}
             filter={filter}
             meshSize={meshSize}
