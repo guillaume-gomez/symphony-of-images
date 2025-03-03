@@ -47,8 +47,8 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
   }
 
   return (
-    <div>
-      <label className="block mb-1 text-base font-semibold">{label}</label>
+    <div className="form-control">
+      <label className="label cursor-pointer">{label}</label>
       <div className="flex flex-row relative">
         <input id="color-picker" disabled className="w-full border border-gray-400 p-2 rounded-lg text-white" value={value}  />
         <input type="color" className="absolute h-full w-10/12 opacity-0" value={value} onChange={(e) => throttleOnChangeInputColor(e.target.value) }/>
@@ -76,6 +76,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
                   COLORS.map(color =>
                     (
                       <div
+                        key={color.hex}
                         style={{background: color.hex}}
                         onClick={()=> selectColor(color.hex)}
                         className={`cursor-pointer w-6 h-6 rounded-full mx-1 my-1`}>
