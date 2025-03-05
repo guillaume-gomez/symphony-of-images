@@ -1,5 +1,4 @@
-import { useState } from 'react'
-
+import { useState, useReducer } from 'react';
 import AudioPermission from "./Components/AudioPermission";
 import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
@@ -7,11 +6,13 @@ import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
 import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
+import useAudioContext from "./Components/Reducer/useAudioContext";
 
 
 import './App.css'
 
 function App() {
+  const context = useAudioContext();
   const [count, setCount] = useState(0);
   const [imageBase64, setImageBase64] = useState<string|null>(null);
   const [amplitude, setAmplitude] = useState<number>(1.0);
@@ -21,6 +22,7 @@ function App() {
   const [background, setBackground] = useState<string>("#3D3E61");
   const konami = useKonamiCode();
 
+  console.log(context)
 
   function onChange(imageBase64) {
     setImageBase64(imageBase64);
@@ -29,7 +31,7 @@ function App() {
   return (
     <>
       <h1>{konami ? "KONAMI" : "Vo Image"}</h1>
-      <div className="card bg-base-100 shadow-xl">
+      <div className="card bg-base-200 shadow-xl">
         <div className="card-body">
           <h2 className="card-title">Settings</h2>
           <Range

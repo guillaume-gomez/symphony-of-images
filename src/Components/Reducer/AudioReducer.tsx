@@ -1,3 +1,5 @@
+import { useReducer, createContext } from "react";
+
 type Play = { type: 'play' };
 type Pause = { type: 'pause' };
 type ImportMp3 = { type: 'importMp3', payload: string }
@@ -7,6 +9,7 @@ interface AppState {
   audio: null | HTMLAudioElement;
 }
 
+const initialState = { audio: null };
 
 function AudioReducer(state: AppState, action: AppActions) {
   switch (action.type) {
@@ -33,4 +36,24 @@ function AudioReducer(state: AppState, action: AppActions) {
 }
 
 
-export default AudioReducer;
+
+export const AppContext = createContext<{
+  state: AppState;
+  dispatch: React.Dispatch<AppActions>;
+}>({
+  state: initialState,
+  dispatch: () => null
+});
+
+// Define the provider component
+function AppContextProvider({ children }: ContextProviderProps) {
+  const [state, dispatch] = useReducer(AudioReducer, initialState);
+
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
+}
+
+export default AppContextProvider;
