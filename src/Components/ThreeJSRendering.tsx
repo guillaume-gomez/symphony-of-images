@@ -2,29 +2,35 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
 import { Mesh } from "three";
-import { Stage, CameraControls } from '@react-three/drei';
+import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 import Range from "./Range";
 
 
 interface ThreejsRenderingProps {
-  depth: number;
   backgroundColor: string;
   imageTexture: string;
   width: number;
   height: number;
+  amplitude: number;
+  filter: number;
+  meshSize: number;
+  wireframe: boolean;
 }
 
 
-function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height } : ThreejsRenderingProps) {
+function ThreejsRendering({
+    backgroundColor,
+    imageTexture,
+    width,
+    height,
+    amplitude,
+    filter,
+    meshSize,
+    wireframe
+  } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
-  const [amplitude, setAmplitude] = useState<number>(1.0);
-  const [filter, setFilter] = useState<number>(10.0);
-  const [meshSize, setMeshSize] = useState<number>(256);
-  const [wireframe, setWireframe] = useState<boolean>(true);
-  const cameraControlRef = useRef<CameraControls|null>(null);
-  const [maxDistance, setMaxDistance] = useState<number>(500);
   const meshRef = useRef<Mesh>(null);
 
   useEffect(() => {
@@ -51,43 +57,6 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      <div className="card bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Settings</h2>
-          <Range
-            label="Mesh Size"
-            value={meshSize}
-            min={16}
-            max={256}
-            step={1}
-            onChange={setMeshSize}
-          />
-          <Range
-            label="Amplitude"
-            float
-            value={amplitude}
-            min={0.1}
-            max={2.0}
-            step={0.01}
-            onChange={setAmplitude}
-          />
-          <Range
-            label="Filter"
-            float
-            value={filter}
-            min={0.0}
-            max={255}
-            step={0.5}
-            onChange={setFilter}
-          />
-          <div className="form-control">
-            <label className="label cursor-pointer">
-              <span className="label-text">Wireframe</span>
-              <input type="checkbox" className="toggle" checked={wireframe} onClick={() => setWireframe(!wireframe)} />
-            </label>
-          </div>
-        </div>
-      </div>
       <Canvas
         camera={{ position: [0, 0.0, 1], fov: 35, far: 5 }}
         dpr={window.devicePixelRatio}
@@ -123,6 +92,9 @@ function ThreejsRendering({ depth, backgroundColor, imageTexture, width, height 
               maxDistance={maxDistance}
               ref={cameraControlRef}
             />
+          <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
+            <GizmoViewport labelColor="white" axisHeadScale={1} />
+          </GizmoHelper>
         </Stage>
       </Canvas>
     </div>
