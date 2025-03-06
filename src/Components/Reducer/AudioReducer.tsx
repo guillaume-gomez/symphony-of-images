@@ -18,6 +18,7 @@ function AudioReducer(state: AppState, action: AppActions) {
         return state;
       }
       state.audio.play();
+      return state;
     case 'pause':
       if(!audio) {
         return state;
@@ -27,7 +28,7 @@ function AudioReducer(state: AppState, action: AppActions) {
     case 'importMp3':
       const audio = new Audio();
       audio.src = action.payload;
-      audio.autoplay=false;
+      audio.autoplay = false;
 
       return { audio }
     default:

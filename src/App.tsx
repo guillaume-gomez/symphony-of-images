@@ -6,13 +6,9 @@ import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
 import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
-import useAudioContext from "./Components/Reducer/useAudioContext";
-
-
-import './App.css'
+import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
-  const context = useAudioContext();
   const [count, setCount] = useState(0);
   const [imageBase64, setImageBase64] = useState<string|null>(null);
   const [amplitude, setAmplitude] = useState<number>(1.0);
@@ -22,8 +18,7 @@ function App() {
   const [background, setBackground] = useState<string>("#3D3E61");
   const konami = useKonamiCode();
 
-  console.log(context)
-
+  
   function onChange(imageBase64) {
     setImageBase64(imageBase64);
   }
@@ -65,7 +60,6 @@ function App() {
             value={background}
             onChange={(value: string) => setBackground(value)}
           />
-          <Mp3Player />
           <div className="form-control">
             <label className="label cursor-pointer">
               <span className="label-text">Wireframe</span>
@@ -75,18 +69,21 @@ function App() {
         </div>
       </div>
       <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
-      {
-        !imageBase64 ? 
-          <p>Nothing to display</p> :
-          <ThreeJSRendering
-            backgroundColor={background}
-            imageTexture={imageBase64}
-            amplitude={amplitude}
-            filter={filter}
-            meshSize={meshSize}
-            wireframe={wireframe}
-          />
-      }
+      <AppContextProvider>
+        <Mp3Player />
+        {
+          !imageBase64 ? 
+            <p>Nothing to display</p> :
+            <ThreeJSRendering
+              backgroundColor={background}
+              imageTexture={imageBase64}
+              amplitude={amplitude}
+              filter={filter}
+              meshSize={meshSize}
+              wireframe={wireframe}
+            />
+        }
+      </AppContextProvider>
     </>
   )
 }

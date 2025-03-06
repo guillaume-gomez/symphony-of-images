@@ -21,8 +21,6 @@ interface ThreejsRenderingProps {
 function ThreejsRendering({
     backgroundColor,
     imageTexture,
-    width,
-    height,
     amplitude,
     filter,
     meshSize,
@@ -33,19 +31,17 @@ function ThreejsRendering({
 
 
   return (
-    <div className="flex flex-col gap-5 w-full">
+    <div className="flex flex-col gap-5 w-full h-screen">
       <Canvas
-        camera={{ position: [0, 0.0, 1], fov: 35, far: 5 }}
+        camera={{ position: [0, 0.0, 3], fov: 35, far: 5 }}
         dpr={window.devicePixelRatio}
         onDoubleClick={toggleFullscreen}
         ref={canvasRef}
-        style={{width, height}}
       >
         <color attach="background" args={[backgroundColor]} />
         <Stage
           intensity={0.5}
-          preset="rembrandt"
-          shadows={{ type: 'accumulative', color: '#8B7D41', colorBlend: 2, opacity: 1 }}
+          preset="upfront"
           >
           <group
             position={[
