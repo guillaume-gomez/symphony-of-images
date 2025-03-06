@@ -4,7 +4,7 @@ import { useSpring, animated } from '@react-spring/three';
 import React, { useRef, useEffect, useState } from 'react';
 import glsl from "babel-plugin-glsl/macro";
 import { useInterval } from 'usehooks-ts';
-import useAudioContext from "./Hooks/useAudioContext";
+import useAudioContext from "./Hooks/useAudioContextMp3";
 import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
 import ColorShiftMaterial from "./ColorShiftMaterial";
 
@@ -32,10 +32,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
       setHeight(img.height/img.width);
     }
     computeSize();
-    const audio = new Audio();
-    audio.src="/Oklou - obvious.mp3";
-    audio.autoplay=true
-    handleAudioPlay(audio);
+    handleAudioPlay();
   }, [base64Texture]);
 
   const refMaterial = useRef();

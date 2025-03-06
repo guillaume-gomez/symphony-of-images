@@ -65,7 +65,7 @@ function App() {
             value={background}
             onChange={(value: string) => setBackground(value)}
           />
-          <Mp3Player onChange={(audio) => console.log("jfkdjfkd")} />
+          <Mp3Player />
           <div className="form-control">
             <label className="label cursor-pointer">
               <span className="label-text">Wireframe</span>

@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import useAudioContext from "../Reducer/useAudioContext";
 
 interface useAudioContextMp3Props {
   frequencySize: number;
@@ -9,12 +10,14 @@ function useAudioContextMp3({ frequencySize, onUpdate } : useAudioContextMp3Prop
   const audioRef = useRef();
   const source = useRef();
   const analyzer = useRef();
+  const { state: { audio } } = useAudioContext();
+
 
   useEffect(() => {
     return () => cancelAnimationFrame(audioRef.current);
   }, []);
 
-  function handleAudioPlay(audio) {
+  function handleAudioPlay() {
     if(audioRef.current && !audioRef.current.paused) {
       return;
     }
@@ -22,8 +25,8 @@ function useAudioContextMp3({ frequencySize, onUpdate } : useAudioContextMp3Prop
     analyzer.current = audioContext.createAnalyser();
     if (!source.current) {
       source.current = audioContext.createMediaElementSource(audio);
-      source.current.connect(analyser.current);
-      analyser.current.connect(context.destination);
+      source.current.connect(analyzer.current);
+      //analyzer.current.connect(context.destination);
 
       analyzer.current.fftSize = frequencySize;
       update();
