@@ -34,9 +34,9 @@ function useAudioContextMp3({ frequencySize, onUpdate } : useAudioContextMp3Prop
   }
 
   function update() {
-    let animationController = window.requestAnimationFrame(update);
-    if (audioRef.current && audioRef.current.paused) {
-      return cancelAnimationFrame(animationController);
+    const audioRef.current = window.requestAnimationFrame(update);
+    if (audioRef.current || audioRef.current.paused) {
+      return cancelAnimationFrame(audioRef.current);
     }
     const data = new Uint8Array(frequencySize);
     analyzer.current.getByteFrequencyData(data);
