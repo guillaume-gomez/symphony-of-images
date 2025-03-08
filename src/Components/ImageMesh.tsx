@@ -1,4 +1,4 @@
-import * as THREE from 'three'
+import { Mesh } from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSpring, animated } from '@react-spring/three';
 import React, { useRef, useEffect, useState } from 'react';
@@ -17,9 +17,10 @@ interface ImageMeshProps {
   amplitude: float;
   wireframe: boolean;
   meshSize: number;
+  meshRef: RefObject<Mesh>;
 }
 
-function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -55,6 +56,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
 
   return (
     <mesh
+      ref={meshRef}
       position={[0,0,0]}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />

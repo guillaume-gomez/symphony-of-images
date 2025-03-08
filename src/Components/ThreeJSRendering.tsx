@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
-import { OrbitControls, Stage, GizmoHelper, GizmoViewport } from '@react-three/drei';
+import { Mesh } from "three";
+import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 import Range from "./Range";
 
@@ -28,6 +29,28 @@ function ThreejsRendering({
   } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
+  const meshRef = useRef<Mesh>(null);
+
+  useEffect(() => {
+    centerCamera(meshRef.current)
+  }, [imageTexture, meshRef])
+
+  async function centerCamera(mesh : InstancedMesh) {
+    if(cameraControlRef.current) {
+      cameraControlRef.current.maxDistance = 500;
+      await cameraControlRef.current.setLookAt(
+        0, 0, 1,
+        0,0, 0,
+        false
+      );
+      await cameraControlRef.current.fitToBox(mesh, true,
+        { paddingLeft: 1, paddingRight: 1, paddingBottom: 2, paddingTop: 2 }
+      );
+      let distanceCamera = new Vector3();
+      cameraControlRef.current.getPosition(distanceCamera, false);
+      setMaxDistance(distanceCamera.z + 5.0);
+    }
+  }
 
 
   return (
@@ -53,9 +76,18 @@ function ThreejsRendering({
               amplitude={amplitude}
               meshSize={meshSize}
               filter={filter}
+              meshRef={meshRef}
             />
           </group>
-          <OrbitControls minPolarAngle={0} maxPolarAngle={Math.PI / 1.9} makeDefault />
+          <CameraControls
+              minPolarAngle={0}
+              maxPolarAngle={Math.PI / 1.9}
+              minAzimuthAngle={-0.55}
+              maxAzimuthAngle={0.55}
+              makeDefault
+              maxDistance={maxDistance}
+              ref={cameraControlRef}
+            />
           <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
             <GizmoViewport labelColor="white" axisHeadScale={1} />
           </GizmoHelper>
