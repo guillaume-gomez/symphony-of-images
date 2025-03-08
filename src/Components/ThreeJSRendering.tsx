@@ -30,6 +30,8 @@ function ThreejsRendering({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
   const meshRef = useRef<Mesh>(null);
+  const maxDistance = useRef<number>(500);
+  const cameraControlRef = useRef<CameraControls>();
 
   useEffect(() => {
     centerCamera(meshRef.current)
