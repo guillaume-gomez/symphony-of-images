@@ -68,9 +68,9 @@ function App() {
           </div>
         </div>
       </div>
-      <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
       <AppContextProvider>
         <Mp3Player />
+        <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
         {
           !imageBase64 ? 
             <p>Nothing to display</p> :
