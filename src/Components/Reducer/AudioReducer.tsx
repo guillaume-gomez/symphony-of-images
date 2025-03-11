@@ -11,22 +11,25 @@ interface AppState {
   analyzer: null |  AnalyserNode;
 }
 
-const initialState = { audio: null, frequencySize: 256, analyzer: null };
+const initialState : AppState = { audio: null, frequencySize: 256, analyzer: null };
 
 function AudioReducer(state: AppState, action: AppActions) {
+  console.log(action)
   switch (action.type) {
     case 'play':
       if(!state.audio) {
         return state;
       }
       state.audio.play();
-      return state;
+      console.log(state.audio.paused)
+      return { ...state, audio: state.audio };
     case 'pause':
       if(!state.audio) {
         return state;
       }
       state.audio.pause();
-      return state;
+      console.log(state.audio.paused)
+      return { ...state, audio: state.audio };
     case 'importMp3':
       const audio = new Audio();
       audio.src = action.payload;
