@@ -19,11 +19,15 @@ function useAudioContextMp3({ onUpdate } : useAudioContextMp3Props) {
   useEffect(() => {
     console.log(audio.paused)
     if(audio.paused && animationRef.current) {
-      console.log("paused")
-      return cancelAnimationFrame(animationRef.current)
+      //console.log("paused")
+      cancelAnimationFrame(animationRef.current);
+
+      // send 0 de get back to original image
+      const emptyData = Array(frequencySize).fill(0)
+      onUpdate(emptyData)
     }
     if(!audio.paused) {
-      console.log("play")
+      //console.log("play")
       play()
     }
   }, [audio?.paused])
