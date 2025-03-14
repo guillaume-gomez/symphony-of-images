@@ -20,9 +20,12 @@ function AudioPermission({ onChange } : AudioPermissionProps) {
   }
 
   return (
-     <button onClick={onClick}>
-        Allow microphone
-      </button>
+     <button
+      className="btn btn-primary"
+      onClick={onClick}
+    >
+      Allow microphone
+    </button>
   )
 }
 
