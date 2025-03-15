@@ -69,7 +69,11 @@ function App() {
         </div>
       </div>
       <AppContextProvider>
-        <Mp3Player />
+        <div className="flex flex-row items-center gap-4">
+          <Mp3Player />
+          OR 
+          <AudioPermission />
+        </div>
         <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
         {
           !imageBase64 ? 
