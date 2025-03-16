@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
-import { Mesh } from "three";
+import { Mesh, Vector3 } from "three";
 import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 import Range from "./Range";
