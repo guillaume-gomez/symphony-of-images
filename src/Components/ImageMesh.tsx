@@ -33,7 +33,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
       setHeight(img.height/img.width);
     }
     computeSize();
-    handleAudioPlay();
+    play();
   }, [base64Texture]);
 
   const refMaterial = useRef();
@@ -42,7 +42,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
     base64Texture
   ]);
 
-  const { handleAudioPlay } = useAudioContext({
+  const { play } = useAudioContext({
     frequencySize: 256,
     onUpdate(data) {
       refMaterial.current.frequencies = data;

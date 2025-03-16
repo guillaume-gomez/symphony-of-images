@@ -23,8 +23,8 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
         src={audio?.src}
         id="audio"
         controls
-        onPlay={() => dispatch({type: "play" })}
-        onPause={() => dispatch({type: "pause" })}
+        onPlay={() => { console.log("run play"); dispatch({type: "play" }) }}
+        onPause={() => { console.log("run play"); dispatch({type: "pause" }) }}
       >
       </audio>
     </div>
