@@ -13,6 +13,7 @@
     "@react-spring/three": "^9.7.3",
     "@react-three/drei": "^9.89.0",
     "@react-three/fiber": "^8.15.11",
+    "@types/lodash": "^4.17.16",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.12.23",
     "lodash": "^4.17.21",

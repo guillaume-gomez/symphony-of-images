@@ -1,4 +1,4 @@
-import { useState, useReducer } from 'react';
+import { useState } from 'react';
 import AudioPermission from "./Components/AudioPermission";
 import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
@@ -9,7 +9,6 @@ import Mp3Player from "./Components/Mp3Player";
 import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [imageBase64, setImageBase64] = useState<string|null>(null);
   const [amplitude, setAmplitude] = useState<number>(1.0);
   const [filter, setFilter] = useState<number>(10.0);
@@ -19,7 +18,7 @@ function App() {
   const konami = useKonamiCode();
 
   
-  function onChange(imageBase64) {
+  function onChange(imageBase64: string) {
     setImageBase64(imageBase64);
   }
 

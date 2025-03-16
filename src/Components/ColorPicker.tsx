@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { throttle } from "lodash";
 import ClickAwayListener from 'react-click-away-listener';
 import { palette, findColorByName } from "./palette";

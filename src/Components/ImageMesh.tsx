@@ -2,7 +2,6 @@ import { Mesh } from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import { useSpring, animated } from '@react-spring/three';
 import React, { useRef, useEffect, useState } from 'react';
-import glsl from "babel-plugin-glsl/macro";
 import { useInterval } from 'usehooks-ts';
 import useAudioContext from "./Hooks/useAudioContextMp3";
 import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
