@@ -4,7 +4,8 @@ type Play = { type: 'play' };
 type Pause = { type: 'pause' };
 type ImportMp3 = { type: 'importMp3', payload: string }
 type AllowMicrophone = { type: 'allowMic', payload: AnalyserNode }
-type AppActions = Play | Pause | ImportMp3 | AllowMicrophone;
+type DisableMicrophone = { type: 'disableMic'};
+type AppActions = Play | Pause | ImportMp3 | AllowMicrophone | DisableMicrophone;
 
 interface AppState {
   audio: null | HTMLAudioElement;
@@ -17,7 +18,6 @@ interface AppState {
 const initialState : AppState = { audio: null, frequencySize: 256, analyzer: null, typeOfPlay: 'none', paused: true };
 
 function AudioReducer(state: AppState, action: AppActions) {
-  console.log("reducer", action)
   switch (action.type) {
     case 'play':
       if(!state.audio) {
@@ -40,6 +40,13 @@ function AudioReducer(state: AppState, action: AppActions) {
       return { ...state, typeOfPlay: "mp3", audio, analyzer }
     case 'allowMic':
         return { ...state, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
+    case 'disableMic':
+        if(window.localStream) {
+          window.localStream.getAudioTracks().forEach((track) => {
+            track.stop();
+          });
+        }
+        return { ...state, paused: true, typeOfPlay: 'none', analyzer: null };
     default:
       return state;
   }
@@ -51,7 +58,6 @@ function createAnalyser(audio: AudioNode, frequencySize: number) {
     let analyzer = audioContext.createAnalyser();
     let source = audioContext.createMediaElementSource(audio);
     source.connect(analyzer);
-    //analyzer.current.connect(context.destination);
 
     analyzer.fftSize = frequencySize;
     return analyzer;
@@ -70,7 +76,6 @@ export const AppContext = createContext<{
 // Define the provider component
 function AppContextProvider({ children }: ContextProviderProps) {
   const [state, dispatch] = useReducer(AudioReducer, initialState);
-  console.log(state)
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

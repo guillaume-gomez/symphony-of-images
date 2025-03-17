@@ -5,11 +5,18 @@ interface AudioPermissionProps {
 }
 
 function AudioPermission({} : AudioPermissionProps) {
- const { dispatch, state: { paused } } = useAudioContext();
+ const { dispatch, state: { paused, typeOfPlay } } = useAudioContext();
+  
   function onClick() {
+
+    // turn off recording
     if(!paused) {
-      return; // turn off recording
+      dispatch({ type: 'disableMic' });
+      return; 
     }
+
+    // enable recording
+    // note : As the function is async, this piece of cannot be in the reducer directly 
     navigator.mediaDevices.getUserMedia({ video: false, audio: true })
       .then((stream) => {
         window.localStream = stream;
@@ -25,14 +32,22 @@ function AudioPermission({} : AudioPermissionProps) {
       });
 
   }
+
+  function isPaused() {
+    // is not related to microphone
+    if(typeOfPlay === "mp3") {
+      return false;
+    }
+    return paused;
+  }
   
 
   return (
      <button
-      className="btn btn-primary"
+      className={`btn ${isPaused() ? "btn-primary" : "btn-secondary"}`}
       onClick={onClick}
     >
-      Allow microphone
+      { isPaused() ? "Allow microphone" : "Turn off microphone" }
     </button>
   )
 }
