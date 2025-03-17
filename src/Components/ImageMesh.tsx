@@ -1,7 +1,7 @@
 import { Mesh } from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import React, { useRef, useEffect, useState } from 'react';
-import useAudioContext from "./Hooks/useAudioContextMp3";
+import useAudioData from "./Hooks/useAudioData";
 import { useLoader, extend } from '@react-three/fiber';
 import ColorShiftMaterial from "./ColorShiftMaterial";
 
@@ -39,8 +39,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
     base64Texture
   ]);
 
-  const { play } = useAudioContext({
-    frequencySize: 256,
+  const { play } = useAudioData({
     onUpdate(data) {
       refMaterial.current.frequencies = data;
     }
