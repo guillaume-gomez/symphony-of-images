@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
 import useAudioContext from "./Reducer/useAudioContext";
 
 interface Mp3PlayerInterface {
 }
 
 function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
-  const audioRef = useRef();
   const { state: { audio }, dispatch } = useAudioContext();
 
   function handleFiles(event) {

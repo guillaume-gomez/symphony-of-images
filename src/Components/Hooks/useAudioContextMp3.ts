@@ -8,26 +8,23 @@ interface useAudioContextMp3Props {
 
 function useAudioContextMp3({ onUpdate } : useAudioContextMp3Props) {
   const animationRef = useRef();
-  const { state: { audio, analyzer, frequencySize } } = useAudioContext();
-
-  console.log("ndfaudio")
+  const { state: { typeOfPlay, audio, analyzer, frequencySize, paused } } = useAudioContext();
 
   useEffect(() => {
     return () => cancelAnimationFrame(animationRef.current);
   }, []);
 
   useEffect(() => {
-    console.log(audio.paused)
-    if(audio.paused && animationRef.current) {
-      //console.log("paused")
+    if(paused && animationRef.current) {
+      console.log("paused")
       cancelAnimationFrame(animationRef.current);
 
       // send 0 de get back to original image
       const emptyData = Array(frequencySize).fill(0)
       onUpdate(emptyData)
     }
-    if(!audio.paused) {
-      //console.log("play")
+    if(!paused) {
+      console.log("play")
       play()
     }
   }, [audio?.paused])
@@ -35,11 +32,12 @@ function useAudioContextMp3({ onUpdate } : useAudioContextMp3Props) {
 
   function play() {
     animationRef.current = window.requestAnimationFrame(play);
-    if (animationRef.current && !audio) {
+    if (paused && animationRef.current) {
       return cancelAnimationFrame(animationRef.current);
     }
     const data = new Uint8Array(frequencySize);
     analyzer.getByteFrequencyData(data);
+    console.log(data)
     onUpdate(data);
   };
 
