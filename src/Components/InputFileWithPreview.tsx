@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface InputFileWithPreviewProps {
-  imageBase64: string|undefined;
+  imageBase64?: string|null;
   onChange: (base64data: string) => void;
 }
 
