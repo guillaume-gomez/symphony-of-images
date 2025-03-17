@@ -49,7 +49,7 @@ function ThreejsRendering({
       );
       let distanceCamera = new Vector3();
       cameraControlRef.current.getPosition(distanceCamera, false);
-      setMaxDistance(distanceCamera.z + 5.0);
+      maxDistance.current = distanceCamera.z + 5.0;
     }
   }
 
@@ -66,6 +66,7 @@ function ThreejsRendering({
         <Stage
           intensity={0.5}
           preset="upfront"
+          adjustCamera={false}
           >
           <group
             position={[
@@ -86,7 +87,7 @@ function ThreejsRendering({
               minAzimuthAngle={-0.55}
               maxAzimuthAngle={0.55}
               makeDefault
-              maxDistance={maxDistance}
+              maxDistance={maxDistance.current}
               ref={cameraControlRef}
             />
           <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
