@@ -6,6 +6,7 @@ import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
 import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
+import Card from "./Components/Card";
 import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
@@ -25,10 +26,8 @@ function App() {
   return (
     <>
       <h1>{konami ? "KONAMI" : "Vo Image"}</h1>
-      <div className="card bg-base-200 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Settings</h2>
-          <Range
+      <Card title="Settings">
+        <Range
             label="Mesh Size"
             value={meshSize}
             min={16}
@@ -65,27 +64,35 @@ function App() {
               <input type="checkbox" className="toggle" checked={wireframe} onChange={() => setWireframe(!wireframe)} />
             </label>
           </div>
-        </div>
-      </div>
+      </Card>
       <AppContextProvider>
-        <div className="flex flex-row items-center gap-4">
-          <Mp3Player />
-          OR 
-          <AudioPermission />
+        <div className="flex flex-col gap-5">
+          <Card title="Medium card">
+            <div>
+              <div className="flex flex-row items-center gap-4">
+                <Mp3Player />
+                OR 
+                <AudioPermission />
+              </div>
+              <InputFileWithPreview
+                  onChange={onChange}
+                  imageBase64={imageBase64}
+              />
+            </div>
+          </Card>
+          {
+            !imageBase64 ? 
+              <p>Nothing to display</p> :
+              <ThreeJSRendering
+                backgroundColor={background}
+                imageTexture={imageBase64}
+                amplitude={amplitude}
+                filter={filter}
+                meshSize={meshSize}
+                wireframe={wireframe}
+              />
+          }
         </div>
-        <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
-        {
-          !imageBase64 ? 
-            <p>Nothing to display</p> :
-            <ThreeJSRendering
-              backgroundColor={background}
-              imageTexture={imageBase64}
-              amplitude={amplitude}
-              filter={filter}
-              meshSize={meshSize}
-              wireframe={wireframe}
-            />
-        }
       </AppContextProvider>
     </>
   )
