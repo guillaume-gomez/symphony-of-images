@@ -57,7 +57,7 @@ function ThreejsRendering({
   return (
     <div className="flex flex-col gap-5 w-full h-screen">
       <Canvas
-        camera={{ position: [0, 0.0, 3], fov: 35, far: 5 }}
+        camera={{ position: [0, 0.0, 3], fov: 50, far: 5 }}
         dpr={window.devicePixelRatio}
         onDoubleClick={toggleFullscreen}
         ref={canvasRef}
@@ -82,10 +82,10 @@ function ThreejsRendering({
             />
           </group>
           <CameraControls
-              minPolarAngle={0}
+              /*minPolarAngle={0}
               maxPolarAngle={Math.PI / 1.9}
               minAzimuthAngle={-0.55}
-              maxAzimuthAngle={0.55}
+              maxAzimuthAngle={0.55}*/
               makeDefault
               maxDistance={maxDistance.current}
               ref={cameraControlRef}
