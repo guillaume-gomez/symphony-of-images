@@ -36,7 +36,7 @@ function AudioPermission({} : AudioPermissionProps) {
   function isPaused() {
     // is not related to microphone
     if(typeOfPlay === "mp3") {
-      return false;
+      return true;
     }
     return paused;
   }
