@@ -24,8 +24,8 @@ function App() {
   }
 
   return (
-    <>
-      <h1>{konami ? "KONAMI" : "Vo Image"}</h1>
+    <div className="container m-auto flex flex-col gap-5">
+      <h1 className="text-4xl">{konami ? "KONAMI" : "Vo Image"}</h1>
       <Card title="Settings">
         <Range
             label="Mesh Size"
@@ -94,7 +94,7 @@ function App() {
           }
         </div>
       </AppContextProvider>
-    </>
+    </div>
   )
 }
 
