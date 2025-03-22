@@ -70,7 +70,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
         {isOpen ?
           <ClickAwayListener onClickAway={handleClickAway}>
           <div style={{ zIndex: 4 }} className="overflow-y-scroll overflow-x-hidden h-36 border-2 border-gray-300 origin-top-right absolute right-0 top-full mt-2 rounded-md shadow-lg">
-            <div className="rounded-md bg-base-200 shadow-xs p-3">
+            <div className="rounded-md bg-base-200 shadow-2xs p-3">
               <div className="grid grid-flow-row-dense grid-cols-5">
                 {
                   COLORS.map(color =>
