@@ -1,11 +1,8 @@
-import * as THREE from 'three'
+import { Mesh } from 'three';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import { useSpring, animated } from '@react-spring/three';
 import React, { useRef, useEffect, useState } from 'react';
-import glsl from "babel-plugin-glsl/macro";
-import { useInterval } from 'usehooks-ts';
-import useAudioContext from "./Hooks/useAudioContextMp3";
-import { ThreeElements, useLoader, extend, useFrame } from '@react-three/fiber';
+import useAudioData from "./Hooks/useAudioData";
+import { useLoader, extend } from '@react-three/fiber';
 import ColorShiftMaterial from "./ColorShiftMaterial";
 
 // to notify to three-js (it will not work without)
@@ -13,13 +10,14 @@ extend({ ColorShiftMaterial })
 
 interface ImageMeshProps {
   base64Texture: string;
-  filter: float;
-  amplitude: float;
+  filter: number;
+  amplitude: number;
   wireframe: boolean;
   meshSize: number;
+  meshRef: RefObject<Mesh>;
 }
 
-function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -32,7 +30,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
       setHeight(img.height/img.width);
     }
     computeSize();
-    handleAudioPlay();
+    play();
   }, [base64Texture]);
 
   const refMaterial = useRef();
@@ -41,8 +39,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
     base64Texture
   ]);
 
-  const { handleAudioPlay } = useAudioContext({
-    frequencySize: 256,
+  const { play } = useAudioData({
     onUpdate(data) {
       refMaterial.current.frequencies = data;
     }
@@ -55,6 +52,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize }: Ima
 
   return (
     <mesh
+      ref={meshRef}
       position={[0,0,0]}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />

@@ -1,11 +1,9 @@
-import React, { useRef } from 'react';
 import useAudioContext from "./Reducer/useAudioContext";
 
 interface Mp3PlayerInterface {
 }
 
 function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
-  const audioRef = useRef();
   const { state: { audio }, dispatch } = useAudioContext();
 
   function handleFiles(event) {
@@ -23,8 +21,8 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
         src={audio?.src}
         id="audio"
         controls
-        onPlay={() => dispatch({type: "play" })}
-        onPause={() => dispatch({type: "pause" })}
+        onPlay={() => { console.log("run play"); dispatch({type: "play" }) }}
+        onPause={() => { console.log("run play"); dispatch({type: "pause" }) }}
       >
       </audio>
     </div>

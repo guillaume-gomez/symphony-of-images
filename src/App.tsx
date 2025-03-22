@@ -1,4 +1,4 @@
-import { useState, useReducer } from 'react';
+import { useState } from 'react';
 import AudioPermission from "./Components/AudioPermission";
 import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
@@ -6,10 +6,10 @@ import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
 import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
+import Card from "./Components/Card";
 import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
-  const [count, setCount] = useState(0);
   const [imageBase64, setImageBase64] = useState<string|null>(null);
   const [amplitude, setAmplitude] = useState<number>(1.0);
   const [filter, setFilter] = useState<number>(10.0);
@@ -19,17 +19,15 @@ function App() {
   const konami = useKonamiCode();
 
   
-  function onChange(imageBase64) {
+  function onChange(imageBase64: string) {
     setImageBase64(imageBase64);
   }
 
   return (
-    <>
-      <h1>{konami ? "KONAMI" : "Vo Image"}</h1>
-      <div className="card bg-base-200 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Settings</h2>
-          <Range
+    <div className="container m-auto flex flex-col gap-5">
+      <h1 className="text-4xl">{konami ? "KONAMI" : "Vo Image"}</h1>
+      <Card title="Settings">
+        <Range
             label="Mesh Size"
             value={meshSize}
             min={16}
@@ -66,25 +64,37 @@ function App() {
               <input type="checkbox" className="toggle" checked={wireframe} onChange={() => setWireframe(!wireframe)} />
             </label>
           </div>
-        </div>
-      </div>
-      <InputFileWithPreview onChange={onChange} imageBase64={imageBase64}/>
+      </Card>
       <AppContextProvider>
-        <Mp3Player />
-        {
-          !imageBase64 ? 
-            <p>Nothing to display</p> :
-            <ThreeJSRendering
-              backgroundColor={background}
-              imageTexture={imageBase64}
-              amplitude={amplitude}
-              filter={filter}
-              meshSize={meshSize}
-              wireframe={wireframe}
-            />
-        }
+        <div className="flex flex-col gap-5">
+          <Card title="Sound settings">
+            <div>
+              <div className="flex flex-row items-center gap-4">
+                <Mp3Player />
+                OR 
+                <AudioPermission />
+              </div>
+              <InputFileWithPreview
+                  onChange={onChange}
+                  imageBase64={imageBase64}
+              />
+            </div>
+          </Card>
+          {
+            !imageBase64 ? 
+              <p>Nothing to display</p> :
+              <ThreeJSRendering
+                backgroundColor={background}
+                imageTexture={imageBase64}
+                amplitude={amplitude}
+                filter={filter}
+                meshSize={meshSize}
+                wireframe={wireframe}
+              />
+          }
+        </div>
       </AppContextProvider>
-    </>
+    </div>
   )
 }
 
