@@ -67,7 +67,7 @@ function App() {
       </Card>
       <AppContextProvider>
         <div className="flex flex-col gap-5">
-          <Card title="Medium card">
+          <Card title="Sound settings">
             <div>
               <div className="flex flex-row items-center gap-4">
                 <Mp3Player />
