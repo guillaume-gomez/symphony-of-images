@@ -39,7 +39,7 @@ function AudioReducer(state: AppState, action: AppActions) {
       const analyzer = createAnalyser(audio, state.frequencySize);
       return { ...state, typeOfPlay: "mp3", audio, analyzer }
     case 'allowMic':
-        return { ...state, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
+        return { ...state, audio: null, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
     case 'disableMic':
         if(window.localStream) {
           window.localStream.getAudioTracks().forEach((track) => {
