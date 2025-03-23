@@ -1,6 +1,25 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+@theme {
+  --animate-gradient: gradient 10s ease-in-out infinite;
+  @keyframes gradient {
+    0% 100% {
+      background-position: 100% 0%;
+    }
+    20% 60% {
+      background-position: 50% 50%;
+    }
+    40% {
+      background-position: 0% 100%;
+    }
+    80% {
+      background-position: 100% 0%;
+    }
+  }
+}
+
 @plugin "daisyui/theme" {
   name: "mine";
   default: false;
