@@ -1,6 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
-
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, cupcake;
+}
 
 @font-face {
   font-family: "AudioNugget";
@@ -25,6 +26,7 @@
       background-position: 100% 0%;
     }
   }
+  --font-size: 1rem;
   --font-title: 'AudioNugget', sans-serif;
 }
 
@@ -37,10 +39,10 @@
   --color-base-200: oklch(21% 0.006 56.043);
   --color-base-300: oklch(26% 0.007 34.298);
   --color-base-content: oklch(97% 0.001 106.424);
-  --color-primary: oklch(51% 0.262 276.966);
-  --color-primary-content: oklch(96% 0.018 272.314);
-  --color-secondary: oklch(44% 0.043 257.281);
-  --color-secondary-content: oklch(98% 0.003 247.858);
+  --color-primary: oklch(25% 0.09 281.288);
+  --color-primary-content: oklch(98% 0.002 247.839);
+  --color-secondary: oklch(64% 0.246 16.439);
+  --color-secondary-content: oklch(26% 0.079 36.259);
   --color-accent: oklch(54% 0.245 262.881);
   --color-accent-content: oklch(97% 0.014 254.604);
   --color-neutral: oklch(14% 0.004 49.25);
@@ -60,5 +62,5 @@
   --size-field: 0.25rem;
   --border: 2px;
   --depth: 1;
-  --noise: 0;
+  --noise: 1;
 }
