@@ -15,11 +15,16 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
   }
 
   return (
-    <div className="form-control flex flex-row gap-2 items-center">
-      <input type="file" onChange={handleFiles} accept="audio/*" />
+    <div className="form-control flex flex-gap gap-2 border border-primary items-center rounded-xl p-2">
+      <input
+        className="file-input file-input-md file-input-primary"
+        type="file"
+        onChange={handleFiles} accept="audio/*"
+      />
       <audio
         src={audio?.src}
         id="audio"
+        className="h-10"
         controls
         onPlay={() => { console.log("run play"); dispatch({type: "play" }) }}
         onPause={() => { console.log("run play"); dispatch({type: "pause" }) }}

@@ -50,7 +50,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
     <div className="form-control">
       <label className="label cursor-pointer">{label}</label>
       <div className="flex flex-row relative">
-        <input id="color-picker" disabled className="w-full border border-gray-400 p-2 rounded-lg text-white" value={value}  />
+        <input id="color-picker" disabled className="w-full border border-primary p-2 rounded-lg text-white" value={value}  />
         <input type="color" className="absolute h-full w-10/12 opacity-0" value={value} onChange={(e) => throttleOnChangeInputColor(e.target.value) }/>
         <div
           onClick={()=> setIsOpen(!isOpen)}
@@ -69,7 +69,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
         </svg>
         {isOpen ?
           <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ zIndex: 4 }} className="overflow-y-scroll overflow-x-hidden h-36 border-2 border-gray-300 origin-top-right absolute right-0 top-full mt-2 rounded-md shadow-lg">
+          <div style={{ zIndex: 4 }} className="overflow-y-scroll overflow-x-hidden h-36 border-2 border-primary origin-top-right absolute right-0 top-full mt-2 rounded-md shadow-lg">
             <div className="rounded-md bg-base-200 shadow-2xs p-3">
               <div className="grid grid-flow-row-dense grid-cols-5">
                 {
