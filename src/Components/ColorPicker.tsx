@@ -50,7 +50,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
     <div className="form-control">
       <label className="label cursor-pointer">{label}</label>
       <div className="flex flex-row relative">
-        <input id="color-picker" disabled className="w-full border border-primary p-2 rounded-lg text-white" value={value}  />
+        <input id="color-picker" disabled className="w-full bg-base-200 border border-primary p-2 rounded-lg text-white" value={value}  />
         <input type="color" className="absolute h-full w-10/12 opacity-0" value={value} onChange={(e) => throttleOnChangeInputColor(e.target.value) }/>
         <div
           onClick={()=> setIsOpen(!isOpen)}
