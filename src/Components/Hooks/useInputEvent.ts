@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 
 function useInputEvent()  {
-  const [key, setKey] = useState(null);
+  const [key, setKey] = useState<string|null>(null);
   useEffect(() => {
-    const keyDownHandler = ({ code }) => setKey(code);
-    const keyUpHandler = () => setKey(null);
+    
+    function keyDownHandler({ code } :  KeyboardEvent) {
+      setKey(code);
+    }
+    
+    function keyUpHandler() {
+      setKey(null);
+    }
+    
     window.addEventListener('keydown', keyDownHandler);
     window.addEventListener('keyup', keyUpHandler);
     return () => {

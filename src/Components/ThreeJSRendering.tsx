@@ -9,8 +9,6 @@ import ImageMesh from "./ImageMesh";
 interface ThreejsRenderingProps {
   backgroundColor: string;
   imageTexture: string;
-  width: number;
-  height: number;
   amplitude: number;
   filter: number;
   meshSize: number;
@@ -30,13 +28,16 @@ function ThreejsRendering({
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
   const meshRef = useRef<Mesh>(null);
   const maxDistance = useRef<number>(500);
-  const cameraControlRef = useRef<CameraControls>();
+  const cameraControlRef = useRef<CameraControls>(null);
 
   useEffect(() => {
+    if(!meshRef.current) {
+      return;
+    }
     centerCamera(meshRef.current)
   }, [imageTexture, meshRef])
 
-  async function centerCamera(mesh : InstancedMesh) {
+  async function centerCamera(mesh : Mesh) {
     if(cameraControlRef.current) {
       cameraControlRef.current.maxDistance = 500;
       await cameraControlRef.current.setLookAt(

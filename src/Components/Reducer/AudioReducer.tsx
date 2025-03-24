@@ -1,4 +1,4 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext, ReactNode, Dispatch } from "react";
 
 type Play = { type: 'play' };
 type Pause = { type: 'pause' };
@@ -42,7 +42,7 @@ function AudioReducer(state: AppState, action: AppActions) {
         return { ...state, audio: null, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
     case 'disableMic':
         if(window.localStream) {
-          window.localStream.getAudioTracks().forEach((track) => {
+          window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
             track.stop();
           });
         }
@@ -53,7 +53,7 @@ function AudioReducer(state: AppState, action: AppActions) {
 }
 
 
-function createAnalyser(audio: AudioNode, frequencySize: number) {
+function createAnalyser(audio: HTMLAudioElement, frequencySize: number) {
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
     let analyzer = audioContext.createAnalyser();
     let source = audioContext.createMediaElementSource(audio);
@@ -67,11 +67,15 @@ function createAnalyser(audio: AudioNode, frequencySize: number) {
 
 export const AppContext = createContext<{
   state: AppState;
-  dispatch: React.Dispatch<AppActions>;
+  dispatch: Dispatch<AppActions>;
 }>({
   state: initialState,
   dispatch: () => null
 });
+
+type ContextProviderProps = {
+  children: ReactNode,
+};
 
 // Define the provider component
 function AppContextProvider({ children }: ContextProviderProps) {

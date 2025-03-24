@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import useInputEvent from "./useInputEvent";
 
-function useSecretCode(secretCode) {
-  const [count, setCount] = useState(0);
-  const [success, setSuccess] = useState(false);
+function useSecretCode(secretCode: string[]) {
+  const [count, setCount] = useState<number>(0);
+  const [success, setSuccess] = useState<boolean>(false);
   const key = useInputEvent();
 
   useEffect(() => {

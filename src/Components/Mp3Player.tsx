@@ -6,7 +6,11 @@ interface Mp3PlayerInterface {
 function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
   const { state: { audio }, dispatch } = useAudioContext();
 
-  function handleFiles(event) {
+  function handleFiles(event: React.ChangeEvent<HTMLInputElement>) {
+    if(!event.target.files || event.target.files.length === 0) {
+      return;
+    }
+
     const file = event.target.files[0];
     if (file) {
       const mp3File = URL.createObjectURL(file);
@@ -24,6 +28,7 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
       <audio
         src={audio?.src}
         id="audio"
+        controlsList="nodownload noplaybackrate"
         className="h-10"
         controls
         onPlay={() => { console.log("run play"); dispatch({type: "play" }) }}

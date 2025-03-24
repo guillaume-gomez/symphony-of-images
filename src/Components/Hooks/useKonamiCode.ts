@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import useInputEvent from "./useInputEvent";
 import useSecretCode from "./useSecretCode";
 
 const konamiCode = [
