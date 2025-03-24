@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-interface Card {
+interface CardProps {
     children: ReactNode;
     title: string;
 }
 
-function Card({children, title}) {
+function Card({children, title} : CardProps) {
 	return (
     <div className="card bg-base-300 shadow-xl">
         <div className="card-body">
