@@ -4,11 +4,22 @@
 }
 
 @font-face {
-  font-family: "AudioNugget";
-  src: local("AudioNugget"),
-    url("/fonts/AudioNugget.ttf") format("truetype");
+  font-family: "Neuropol";
+  src: local("Neuropol"),
+    url("/fonts/Neuropol.otf") format("truetype");
 }
 
+@font-face {
+  font-family: "Mokoto";
+  src: local("Mokoto"),
+    url("/fonts/Mokoto_Demo.ttf") format("truetype");
+}
+
+@layer base {
+  html {
+    font-family: 'Mokoto', sans-serif;
+  }
+}
 
 @theme {
   --animate-gradient: gradient 10s ease-in-out infinite;
@@ -27,7 +38,8 @@
     }
   }
   --font-size: 1rem;
-  --font-title: 'AudioNugget', sans-serif;
+  --font-title: 'Neuropol', sans-serif;
+
 }
 
 @plugin "daisyui/theme" {
