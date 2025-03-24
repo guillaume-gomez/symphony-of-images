@@ -38,7 +38,9 @@ function useAudioData({ onUpdate } : useAudioContextProps) {
     if(!analyzer) {
       return;
     }
-    const data = new Uint8Array(frequencySize);
+    const bufferLength = analyzer.frequencyBinCount;
+    // bufferLength = frequencies/2
+    const data = new Uint8Array(bufferLength);
     analyzer.getByteFrequencyData(data);
     onUpdate(data);
   };

@@ -1,23 +1,29 @@
 import { shaderMaterial } from "@react-three/drei";
 
 const ColorShiftMaterial = shaderMaterial(
-  { uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0], uAmplitude: 1.0, uFilter: 50.0 },
+  { uTexture: null, frequencies: [0, 0.25, 0.75, 0.33, 1.0], uAmplitude: 1.0, uFilter: 50.0, uInvertColor: false },
   // vertex shader
   /*glsl*/`
     varying vec2 vUv;
     uniform sampler2D uTexture;
-    uniform float frequencies[256];
+    uniform float frequencies[128];
     uniform float uAmplitude;
     uniform float uFilter;
+    /* display lighter color first or vice-versa */
+    uniform bool uInvertColor;
 
     void main() {
       vUv = uv;
       vec3 texture = texture2D(uTexture, uv).rgb;
 
       float gray = (texture.r * 0.3 + texture.g * 0.59 + texture.b * 0.11);
+      float numberOfFrequencies = 128.0;
 
-      float numberOfFrequencies = 256.0;
-      int frequencyIndex = int(floor(numberOfFrequencies * gray ) );
+
+      int frequencyIndex = uInvertColor ?
+        int(numberOfFrequencies) - int( floor( numberOfFrequencies * gray ) ) :
+        int( floor( numberOfFrequencies * gray ) )
+      ;
 
       float frequency = frequencies[frequencyIndex];
 

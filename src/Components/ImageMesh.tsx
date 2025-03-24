@@ -71,6 +71,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uTexture={texture}
         uAmplitude={amplitude}
         uFilter={filter}
+        uInvertColor={true}
       />
       <meshStandardMaterial attach="material-5" color="orange" />
       </mesh>
