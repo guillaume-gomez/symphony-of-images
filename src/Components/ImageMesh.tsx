@@ -15,9 +15,10 @@ interface ImageMeshProps {
   wireframe: boolean;
   meshSize: number;
   meshRef: RefObject<Mesh>;
+  invertColor: boolean
 }
 
-function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef, invertColor }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -71,7 +72,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uTexture={texture}
         uAmplitude={amplitude}
         uFilter={filter}
-        uInvertColor={true}
+        uInvertColor={invertColor}
       />
       <meshStandardMaterial attach="material-5" color="orange" />
       </mesh>

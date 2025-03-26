@@ -13,6 +13,7 @@ interface ThreejsRenderingProps {
   filter: number;
   meshSize: number;
   wireframe: boolean;
+  invertColor: boolean;
 }
 
 
@@ -22,7 +23,8 @@ function ThreejsRendering({
     amplitude,
     filter,
     meshSize,
-    wireframe
+    wireframe,
+    invertColor,
   } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
@@ -79,6 +81,7 @@ function ThreejsRendering({
               amplitude={amplitude}
               meshSize={meshSize}
               filter={filter}
+              invertColor={invertColor}
               meshRef={meshRef}
             />
           </group>
