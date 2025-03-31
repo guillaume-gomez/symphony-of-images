@@ -4,6 +4,7 @@ import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
 import useKonamiCode from "./Components/Hooks/useKonamiCode";
 import Range from "./Components/Range";
+import Toggle from "./Components/Toggle";
 import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
 import Card from "./Components/Card";
@@ -15,6 +16,7 @@ function App() {
   const [filter, setFilter] = useState<number>(10.0);
   const [meshSize, setMeshSize] = useState<number>(256);
   const [wireframe, setWireframe] = useState<boolean>(true);
+  const [invertColor, setInvertColor] = useState<boolean>(false);
   const [background, setBackground] = useState<string>("#000000");
   const konami = useKonamiCode();
 
@@ -27,45 +29,6 @@ function App() {
     <div className="animate-gradient bg-[length:200%_200%] min-h-screen h-full bg-radial-[at_50%_50%] from-zinc-700 to-zinc-900 to-55%">
       <div className="container m-auto flex flex-col gap-5">
         <h1 className="p-2 text-4xl font-title">{konami ? "KONAMI" : "Vo Image"}</h1>
-        <Card title="Settings">
-          <Range
-              label="Mesh Size"
-              value={meshSize}
-              min={16}
-              max={256}
-              step={1}
-              onChange={setMeshSize}
-            />
-            <Range
-              label="Amplitude"
-              float
-              value={amplitude}
-              min={0.1}
-              max={2.0}
-              step={0.01}
-              onChange={setAmplitude}
-            />
-            <Range
-              label="Filter"
-              float
-              value={filter}
-              min={0.0}
-              max={255}
-              step={0.5}
-              onChange={setFilter}
-            />
-            <ColorPicker
-              label="Background color"
-              value={background}
-              onChange={(value: string) => setBackground(value)}
-            />
-            <div className="form-control">
-              <label className="label cursor-pointer">
-                <span className="label-text">Wireframe</span>
-                <input type="checkbox" className="toggle toggle-primary" checked={wireframe} onChange={() => setWireframe(!wireframe)} />
-              </label>
-            </div>
-        </Card>
         <AppContextProvider>
           <div className="flex flex-col gap-5">
             <Card title="Sound settings">
@@ -81,6 +44,49 @@ function App() {
                 />
               </div>
             </Card>
+            <Card title="Settings">
+              <Range
+                label="Mesh Size"
+                value={meshSize}
+                min={16}
+                max={256}
+                step={1}
+                onChange={setMeshSize}
+              />
+              <Range
+                label="Amplitude"
+                float
+                value={amplitude}
+                min={0.1}
+                max={2.0}
+                step={0.01}
+                onChange={setAmplitude}
+              />
+              <Range
+                label="Filter"
+                float
+                value={filter}
+                min={0.0}
+                max={255}
+                step={0.5}
+                onChange={setFilter}
+              />
+              <ColorPicker
+                label="Background color"
+                value={background}
+                onChange={(value: string) => setBackground(value)}
+              />
+              <Toggle
+                label={"Wireframe"}
+                onToggle={(value: boolean) => setWireframe(value)}
+                value={wireframe}
+              />
+              <Toggle
+                label={"Invert Color"}
+                onToggle={(value : boolean) => setInvertColor(value)}
+                value={invertColor}
+              />
+            </Card>
             {
               !imageBase64 ? 
                 <div className="flex flex-col gap-5 items-center">
@@ -94,6 +100,7 @@ function App() {
                   filter={filter}
                   meshSize={meshSize}
                   wireframe={wireframe}
+                  invertColor={invertColor}
                 />
             }
           </div>

@@ -2,10 +2,10 @@
 interface ToggleProps {
   label: string;
   onToggle: (newValue: boolean) => void;
-  value: boolean
+  value: boolean;
 }
 
-function Toggle({label, onToggle, value}) {
+function Toggle({label, onToggle, value} : ToggleProps) {
   return (
       <div className="form-control">
         <label className="label cursor-pointer">
