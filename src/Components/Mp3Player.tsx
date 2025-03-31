@@ -19,9 +19,9 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
   }
 
   return (
-    <div className="form-control flex flex-gap gap-2 border border-primary items-center rounded-xl p-2">
+    <div className="form-control flex flex-col flex-gap gap-2 border border-primary items-center rounded-xl p-2">
       <input
-        className="file-input file-input-md file-input-primary"
+        className="file-input file-input-xs file-input-primary"
         type="file"
         onChange={handleFiles} accept="audio/*"
       />
