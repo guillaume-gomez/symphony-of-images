@@ -2,9 +2,6 @@ import { useState } from 'react';
 import AudioPermission from "./Components/AudioPermission";
 import ThreeJSRendering from "./Components/ThreeJSRendering";
 import InputFileWithPreview from "./Components/InputFileWithPreview";
-import Range from "./Components/Range";
-import Toggle from "./Components/Toggle";
-import ColorPicker from "./Components/ColorPicker";
 import Mp3Player from "./Components/Mp3Player";
 import Card from "./Components/Card";
 import BadgeTitle from "./Components/BadgeTitle";
@@ -12,12 +9,6 @@ import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
   const [imageBase64, setImageBase64] = useState<string|null>(null);
-  const [amplitude, setAmplitude] = useState<number>(1.0);
-  const [filter, setFilter] = useState<number>(10.0);
-  const [meshSize, setMeshSize] = useState<number>(256);
-  const [wireframe, setWireframe] = useState<boolean>(true);
-  const [invertColor, setInvertColor] = useState<boolean>(false);
-  const [background, setBackground] = useState<string>("#000000");
 
   
   function onChange(imageBase64: string) {
@@ -50,49 +41,6 @@ function App() {
                 </div>
               </div>
             </Card>
-            <Card title="Settings">
-              <Range
-                label="Mesh Size"
-                value={meshSize}
-                min={16}
-                max={256}
-                step={1}
-                onChange={setMeshSize}
-              />
-              <Range
-                label="Amplitude"
-                float
-                value={amplitude}
-                min={0.1}
-                max={2.0}
-                step={0.01}
-                onChange={setAmplitude}
-              />
-              <Range
-                label="Filter"
-                float
-                value={filter}
-                min={0.0}
-                max={255}
-                step={0.5}
-                onChange={setFilter}
-              />
-              <ColorPicker
-                label="Background color"
-                value={background}
-                onChange={(value: string) => setBackground(value)}
-              />
-              <Toggle
-                label={"Wireframe"}
-                onToggle={(value: boolean) => setWireframe(value)}
-                value={wireframe}
-              />
-              <Toggle
-                label={"Invert Color"}
-                onToggle={(value : boolean) => setInvertColor(value)}
-                value={invertColor}
-              />
-            </Card>
             {
               !imageBase64 ? 
                 <div className="flex flex-col gap-5 items-center">
@@ -100,13 +48,7 @@ function App() {
                   <span>Upload an Image</span>
                 </div> :
                 <ThreeJSRendering
-                  backgroundColor={background}
                   imageTexture={imageBase64}
-                  amplitude={amplitude}
-                  filter={filter}
-                  meshSize={meshSize}
-                  wireframe={wireframe}
-                  invertColor={invertColor}
                 />
             }
           </div>

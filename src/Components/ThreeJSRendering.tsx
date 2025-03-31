@@ -1,36 +1,35 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { useFullscreen } from "rooks";
 import { Mesh, Vector3 } from "three";
+import Card from "./Card";
+import Range from "./Range";
+import Toggle from "./Toggle";
+import ColorPicker from "./ColorPicker";
 import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 
 
 interface ThreejsRenderingProps {
-  backgroundColor: string;
   imageTexture: string;
-  amplitude: number;
-  filter: number;
-  meshSize: number;
-  wireframe: boolean;
-  invertColor: boolean;
 }
 
 
 function ThreejsRendering({
-    backgroundColor,
     imageTexture,
-    amplitude,
-    filter,
-    meshSize,
-    wireframe,
-    invertColor,
   } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
   const meshRef = useRef<Mesh>(null);
   const maxDistance = useRef<number>(500);
   const cameraControlRef = useRef<CameraControls>(null);
+  const [amplitude, setAmplitude] = useState<number>(1.0);
+  const [filter, setFilter] = useState<number>(10.0);
+  const [meshSize, setMeshSize] = useState<number>(256);
+  const [wireframe, setWireframe] = useState<boolean>(true);
+  const [invertColor, setInvertColor] = useState<boolean>(false);
+  const [background, setBackground] = useState<string>("#000000");
+  const [showSettings, setShowSettings] = useState<boolean>(true);
 
   useEffect(() => {
     if(!meshRef.current) {
@@ -58,14 +57,15 @@ function ThreejsRendering({
 
 
   return (
-    <div className="flex flex-col gap-5 w-full h-screen">
+    <div className="relative w-full h-screen">
+
       <Canvas
-        camera={{ position: [0, 0.0, 3], fov: 50, far: 5 }}
+        camera={{ position: [0, 0.0, 3], fov: 50, far: 100 }}
         dpr={window.devicePixelRatio}
         onDoubleClick={toggleFullscreen}
         ref={canvasRef}
       >
-        <color attach="background" args={[backgroundColor]} />
+        <color attach="background" args={[background]} />
         <Stage
           intensity={0.5}
           preset="upfront"
@@ -99,6 +99,60 @@ function ThreejsRendering({
           </GizmoHelper>
         </Stage>
       </Canvas>
+
+      <div class="absolute left-5 top-5">
+        <button
+          onClick={() => setShowSettings(!showSettings)}
+          className="btn btn-ghost btn-sm">
+            {showSettings ? "hide" : "options" }
+        </button>
+        {showSettings ?
+          <Card title="Settings">
+            <Range
+              label="Mesh Size"
+              value={meshSize}
+              min={16}
+              max={256}
+              step={1}
+              onChange={setMeshSize}
+            />
+            <Range
+              label="Amplitude"
+              float
+              value={amplitude}
+              min={0.1}
+              max={2.0}
+              step={0.01}
+              onChange={setAmplitude}
+            />
+            <Range
+              label="Filter"
+              float
+              value={filter}
+              min={0.0}
+              max={255}
+              step={0.5}
+              onChange={setFilter}
+            />
+            <ColorPicker
+              label="Background color"
+              value={background}
+              onChange={(value: string) => setBackground(value)}
+            />
+            <Toggle
+              label={"Wireframe"}
+              onToggle={(value: boolean) => setWireframe(value)}
+              value={wireframe}
+            />
+            <Toggle
+              label={"Invert Color"}
+              onToggle={(value : boolean) => setInvertColor(value)}
+              value={invertColor}
+            />
+          </Card> :
+          null
+        }
+      </div>
     </div>
   );
 }
