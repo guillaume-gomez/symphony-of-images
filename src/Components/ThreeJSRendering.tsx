@@ -106,7 +106,8 @@ function ThreejsRendering({
           className="btn btn-ghost btn-sm">
             {showSettings ? "hide" : "options" }
         </button>
-        {showSettings ?
+        
+          <div className={showSettings ? "" : "animate-collapse"}>
           <Card title="Settings">
             <Range
               label="Mesh Size"
@@ -149,9 +150,7 @@ function ThreejsRendering({
               onToggle={(value : boolean) => setInvertColor(value)}
               value={invertColor}
             />
-          </Card> :
-          null
-        }
+          </Card></div>
       </div>
     </div>
   );
