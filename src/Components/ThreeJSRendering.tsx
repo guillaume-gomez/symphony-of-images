@@ -47,14 +47,13 @@ function ThreejsRendering({
         false
       );
       await cameraControlRef.current.fitToBox(mesh, true,
-        { paddingLeft: 1, paddingRight: 1, paddingBottom: 2, paddingTop: 2 }
+        { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
       );
       let distanceCamera = new Vector3();
       cameraControlRef.current.getPosition(distanceCamera, false);
-      maxDistance.current = distanceCamera.z + 5.0;
+      maxDistance.current = distanceCamera.z + 1.5;
     }
   }
-
 
   return (
     <div className="relative w-full h-screen">
@@ -86,10 +85,10 @@ function ThreejsRendering({
             />
           </group>
           <CameraControls
-              /*minPolarAngle={0}
+              minPolarAngle={0.65}
               maxPolarAngle={Math.PI / 1.9}
-              minAzimuthAngle={-0.55}
-              maxAzimuthAngle={0.55}*/
+              minAzimuthAngle={-0.65}
+              maxAzimuthAngle={0.65}
               makeDefault
               maxDistance={maxDistance.current}
               ref={cameraControlRef}
@@ -104,10 +103,10 @@ function ThreejsRendering({
         <button
           onClick={() => setShowSettings(!showSettings)}
           className="btn btn-ghost btn-sm">
-            {showSettings ? "hide" : "options" }
+            {showSettings ? "hide" : "show" }
         </button>
         
-          <div className={showSettings ? "" : "animate-collapse"}>
+          <div id="expand-contract" class={ showSettings ? "expanded" : ""}>
           <Card title="Settings">
             <Range
               label="Mesh Size"
@@ -122,7 +121,7 @@ function ThreejsRendering({
               float
               value={amplitude}
               min={0.1}
-              max={2.0}
+              max={1.0}
               step={0.01}
               onChange={setAmplitude}
             />
