@@ -1,6 +1,7 @@
 import { Mesh } from 'three';
 import { TextureLoader } from 'three';
 import { useRef, useEffect, useState, RefObject } from 'react';
+import { useSpring, animated } from '@react-spring/three'
 import useAudioData from "./Hooks/useAudioData";
 import { useLoader, extend } from '@react-three/fiber';
 import ColorShiftMaterial from "./ColorShiftMaterial";
@@ -15,10 +16,11 @@ interface ImageMeshProps {
   wireframe: boolean;
   meshSize: number;
   meshRef: RefObject<Mesh>;
-  invertColor: boolean
+  invertColor: boolean;
+  rotationY: boolean
 }
 
-function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef, invertColor }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef, invertColor, rotationY }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -35,6 +37,9 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
   }, [base64Texture]);
 
   const refMaterial = useRef();
+  const springs = useSpring({
+    rotation: rotationY ?  [-Math.PI/3,0,0] : [0,0,0],
+  })
 
   const [texture] = useLoader(TextureLoader, [
     base64Texture
@@ -56,9 +61,10 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
 
 
   return (
-    <mesh
+    <animated.mesh
       ref={meshRef}
       position={[0,0,0]}
+      rotation={springs.rotation}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />
       <meshStandardMaterial attach="material-0" color="brown" emissive="#000000" roughness={0} metalness={0} />
@@ -75,7 +81,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uInvertColor={invertColor}
       />
       <meshStandardMaterial attach="material-5" color="orange" />
-      </mesh>
+      </animated.mesh>
   )
 }
 

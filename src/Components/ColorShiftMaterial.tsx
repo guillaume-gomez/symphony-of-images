@@ -11,6 +11,7 @@ const ColorShiftMaterial = shaderMaterial(
     uniform float uFilter;
     /* display lighter color first or vice-versa */
     uniform bool uInvertColor;
+    uniform bool uRotationY;
 
     void main() {
       vUv = uv;
@@ -26,16 +27,12 @@ const ColorShiftMaterial = shaderMaterial(
       ;
 
       float frequency = frequencies[frequencyIndex];
-
-      vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-
       float normalisedFrequency = frequency > uFilter ? (frequency / 255.0) : 0.0;
-      modelPosition.z += normalisedFrequency * uAmplitude;
 
-      vec4 viewPosition = viewMatrix * modelPosition;
-      vec4 projectedPosition = projectionMatrix * viewPosition;
-
-      gl_Position = projectedPosition;
+      vec3 newPosition = position + vec3(0.0, 0.0, normalisedFrequency * uAmplitude);
+    
+      // Appliquer la transformation du modèle
+      gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPosition, 1.0);
     }
   `,
   // fragment shader
