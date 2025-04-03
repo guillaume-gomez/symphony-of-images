@@ -23,13 +23,14 @@ function ThreejsRendering({
   const meshRef = useRef<Mesh>(null);
   const maxDistance = useRef<number>(500);
   const cameraControlRef = useRef<CameraControls>(null);
-  const [amplitude, setAmplitude] = useState<number>(1.0);
-  const [filter, setFilter] = useState<number>(10.0);
-  const [meshSize, setMeshSize] = useState<number>(256);
+  const [amplitude, setAmplitude] = useState<number>(0.2);
+  const [filter, setFilter] = useState<number>(0.0);
+  const [meshSize, setMeshSize] = useState<number>(128);
   const [wireframe, setWireframe] = useState<boolean>(true);
   const [invertColor, setInvertColor] = useState<boolean>(false);
   const [background, setBackground] = useState<string>("#000000");
   const [showSettings, setShowSettings] = useState<boolean>(true);
+  const [rotationY, setRotationY] = useState<boolean>(false);
 
   useEffect(() => {
     if(!meshRef.current) {
@@ -81,6 +82,7 @@ function ThreejsRendering({
               meshSize={meshSize}
               filter={filter}
               invertColor={invertColor}
+              rotationY={rotationY}
               meshRef={meshRef}
             />
           </group>
@@ -99,14 +101,14 @@ function ThreejsRendering({
         </Stage>
       </Canvas>
 
-      <div class="absolute left-5 top-5">
+      <div className="absolute left-5 top-5">
         <button
           onClick={() => setShowSettings(!showSettings)}
           className="btn btn-ghost btn-sm">
             {showSettings ? "hide" : "show" }
         </button>
         
-          <div id="expand-contract" class={ showSettings ? "expanded" : ""}>
+          <div id="expand-settings" className={ showSettings ? "expanded" : ""}>
           <Card title="Settings">
             <Range
               label="Mesh Size"
@@ -148,6 +150,11 @@ function ThreejsRendering({
               label={"Invert Color"}
               onToggle={(value : boolean) => setInvertColor(value)}
               value={invertColor}
+            />
+            <Toggle
+              label={"Rotation Y"}
+              onToggle={(value : boolean) => setRotationY(value)}
+              value={rotationY}
             />
           </Card></div>
       </div>
