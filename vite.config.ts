@@ -5,6 +5,8 @@ import checker from 'vite-plugin-checker';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/symphony-of-images/",
+  
   plugins: [
     react(),
     tailwindcss(),
