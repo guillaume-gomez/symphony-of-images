@@ -19,7 +19,9 @@ function AudioPermission({} : AudioPermissionProps) {
     // note : As the function is async, this piece of cannot be in the reducer directly 
     navigator.mediaDevices.getUserMedia({ video: false, audio: true })
       .then((stream) => {
+        {/* @ts-ignore: add stream globally. Not perfect but works \°/ */}
         window.localStream = stream;
+        {/* @ts-ignore: window.webkitAudioContext exist */}
         let audioContext = new (window.AudioContext || window.webkitAudioContext)();
         const analyzer = audioContext.createAnalyser();
         let source = audioContext.createMediaStreamSource(stream);

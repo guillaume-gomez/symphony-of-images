@@ -50,7 +50,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
       if(!refMaterial.current) {
         return;
       }
-
+      // @ts-ignore: frequencies is defined in the stader colorShiftMaterial
       refMaterial.current.frequencies = data;
     }
   });
@@ -64,6 +64,7 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
     <animated.mesh
       ref={meshRef}
       position={[0,0,0]}
+      // @ts-ignore: Spring type is Vector3 Type (Typescript return error on position)
       rotation={springs.rotation}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />
@@ -72,6 +73,8 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
       <meshStandardMaterial attach="material-2" color="green" emissive="#000000" roughness={0} metalness={0} />
       <meshStandardMaterial attach="material-3" color="purple" emissive="#000000" roughness={0} metalness={0} />
       <meshStandardMaterial attach="material-5" color="orange" />*/}
+
+      {/* @ts-ignore: Spring type is Vector3 Type (Typescript return error on position) */}
       <colorShiftMaterial
         attach="material-4"
         wireframe={wireframe}

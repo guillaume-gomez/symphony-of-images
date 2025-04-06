@@ -44,7 +44,9 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
         }
         return { ...state, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
     case 'disableMic':
+        {/* @ts-ignore: window.localStream exist \°/ */}
         if(window.localStream) {
+          {/* @ts-ignore: window.webkitAudioContext exist */}
           window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
             track.stop();
           });
@@ -57,6 +59,7 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
 
 
 function createAnalyser(audio: HTMLAudioElement, frequencySize: number) {
+    {/* @ts-ignore: window.webkitAudioContext exist */}
     let audioContext = new (window.AudioContext || window.webkitAudioContext)();
     let analyzer = audioContext.createAnalyser();
     let source = audioContext.createMediaElementSource(audio);
