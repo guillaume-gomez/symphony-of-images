@@ -17,7 +17,7 @@ interface AppState {
 
 const initialState : AppState = { audio: null, frequencySize: 256, analyzer: null, typeOfPlay: 'none', paused: true };
 
-function AudioReducer(state: AppState, action: AppActions) {
+function AudioReducer(state: AppState, action: AppActions) : AppState {
   switch (action.type) {
     case 'play':
       if(!state.audio) {
