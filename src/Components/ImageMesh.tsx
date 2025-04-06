@@ -67,10 +67,11 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
       rotation={springs.rotation}
     >
       <boxGeometry args={[width, height, 0.1, meshSize, meshSize, 1]} />
-      <meshStandardMaterial attach="material-0" color="brown" emissive="#000000" roughness={0} metalness={0} />
+      {/*<meshStandardMaterial attach="material-0" color="brown" emissive="#000000" roughness={0} metalness={0} />
       <meshStandardMaterial attach="material-1" color="red" emissive="#000000" roughness={0} metalness={0} />
       <meshStandardMaterial attach="material-2" color="green" emissive="#000000" roughness={0} metalness={0} />
       <meshStandardMaterial attach="material-3" color="purple" emissive="#000000" roughness={0} metalness={0} />
+      <meshStandardMaterial attach="material-5" color="orange" />*/}
       <colorShiftMaterial
         attach="material-4"
         wireframe={wireframe}
@@ -80,7 +81,6 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uFilter={filter}
         uInvertColor={invertColor}
       />
-      <meshStandardMaterial attach="material-5" color="orange" />
       </animated.mesh>
   )
 }
