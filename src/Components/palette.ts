@@ -32,14 +32,14 @@ export const palette : paletteColor[] = [
     { name: "Fluorescent Yellow", hex: "#F7FF00" },
     { name: "Fluorescent Red", hex: "#FF4C65" },
     { name: "Fluorescent Green", hex: "#44D62C" },
-    { name: "Wine", hex: "#914E72" },
+    //{ name: "Wine", hex: "#914E72" }, same color as "Burgury"
     { name: "Dark Mauve", hex: "#BD8CA6" },
     { name: "Light Mauve", hex: "#E6B5C9" },
     { name: "Bubble Gum", hex: "#F984CA" },
     { name: "Bisque", hex: "#F2CDCF" },
     { name: "Mahogany", hex: "#8E595A" },
     { name: "Copper", hex: "#BD6439" },
-    { name: "Bright Gold", hex: "#BA8032" },
+    //{ name: "Bright Gold", hex: "#BA8032" }, same color as "Bright Olive Green"
     { name: "Bright Olive Green", hex: "#BA8032" },
     { name: "Pumkin", hex: "#FF6F4C" },
     { name: "Paprika", hex: "#EE7F4B" },
@@ -51,7 +51,7 @@ export const palette : paletteColor[] = [
     { name: "Rasberry Red", hex: "#B44B65" },
     { name: "Maroon", hex: "#9E4C6E" },
     { name: "Cranberry", hex: "#C24F5D" },
-    { name: "Tomato", hex: "#D2515E" },
+    //{ name: "Tomato", hex: "#D2515E" }, same color as "marine red"
     { name: "Scarlet", hex: "#F65058" },
     { name: "Grape", hex: "#6C5D80" },
     { name: "Raisin", hex: "#775D7A" },

@@ -48,10 +48,23 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
 
   return (
     <div className="form-control">
-      <label className="label cursor-pointer">{label}</label>
+      <label
+        className="label cursor-pointer">
+        {label}
+      </label>
       <div className="flex flex-row relative">
-        <input id="color-picker" disabled className="w-full bg-base-200 border border-primary p-2 rounded-lg text-white" value={value}  />
-        <input type="color" className="absolute h-full w-10/12 opacity-0" value={value} onChange={(e) => throttleOnChangeInputColor(e.target.value) }/>
+        <input
+          id="color-picker"
+          disabled
+          className="w-full bg-base-200 border border-primary p-2 rounded-lg text-white"
+          value={value}
+        />
+        <input
+          type="color"
+          className="absolute h-full w-10/12 opacity-0"
+          value={value}
+          onChange={(e) => throttleOnChangeInputColor(e.target.value) }
+        />
         <div
           onClick={()=> setIsOpen(!isOpen)}
           style={{background: value }}
@@ -64,12 +77,17 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
         </svg>
         {isOpen ?
           <ClickAwayListener onClickAway={handleClickAway}>
-          <div style={{ zIndex: 4 }} className="overflow-y-scroll overflow-x-hidden h-36 border-2 border-primary origin-top-right absolute right-0 top-full mt-2 rounded-md shadow-lg">
+          <div
+            style={{ zIndex: 4 }}
+            className="overflow-y-scroll overflow-x-hidden h-36 border-2 border-primary origin-top-right absolute right-0 top-full mt-2 rounded-md shadow-lg">
             <div className="rounded-md bg-base-200 shadow-2xs p-3">
               <div className="grid grid-flow-row-dense grid-cols-5">
                 {
