@@ -56,7 +56,7 @@ function ColorPicker({label, value, onChange} : ColorPickerInterface) {
         <input
           id="color-picker"
           disabled
-          className="w-full bg-base-200 border border-primary p-2 rounded-lg text-white"
+          className="w-full bg-base-200 border border-primary p-2 rounded-md text-white"
           value={value}
         />
         <input
