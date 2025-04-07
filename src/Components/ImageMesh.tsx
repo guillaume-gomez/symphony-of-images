@@ -59,6 +59,8 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
     return <></>;
   }
 
+  const typeOfFilter = 1; // 0 color, 1 height
+
 
   return (
     <animated.mesh
@@ -83,6 +85,8 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uAmplitude={amplitude}
         uFilter={filter}
         uInvertColor={invertColor}
+        uTypeOfFilter={typeOfFilter}
+        
       />
       </animated.mesh>
   )
