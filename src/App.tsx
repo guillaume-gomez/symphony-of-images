@@ -23,7 +23,7 @@ function App() {
           <div className="flex flex-col gap-5">
             <Card title="Sound settings">
               <div className="flex w-full flex-col lg:flex-row">
-                <div className="card rounded-box grid h-44 grow place-items-center w-6/12" style={{background: "var(--color-base-400)"}}>
+                <div className="card rounded-box grid h-44 grow place-items-center lg:w-6/12" style={{background: "var(--color-base-400)"}}>
                   <BadgeTitle number={1} text={"Upload an image"} />
                   <InputFileWithPreview
                     onChange={onChange}
@@ -34,7 +34,7 @@ function App() {
                 <div className="divider lg:divider-horizontal">
                   <div className="badge badge-primary badge-md rounded">Then</div>
                 </div>
-                <div className="card rounded-box grid h-44 grow place-items-center w-6/12 p-2" style={{background: "var(--color-base-400)"}}>
+                <div className="card rounded-box grid h-44 grow place-items-center lg:w-6/12 p-2" style={{background: "var(--color-base-400)"}}>
                   <BadgeTitle number={2} text={"Upload mp3 file or enable microphone"} />
                   <Mp3Player />
                   <AudioPermission />
