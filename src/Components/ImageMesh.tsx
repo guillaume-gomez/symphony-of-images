@@ -17,10 +17,11 @@ interface ImageMeshProps {
   meshSize: number;
   meshRef: RefObject<Mesh>;
   invertColor: boolean;
-  rotationY: boolean
+  rotationY: boolean;
+  rendering: number;
 }
 
-function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef, invertColor, rotationY }: ImageMeshProps) {
+function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshRef, invertColor, rotationY, rendering }: ImageMeshProps) {
   const [width, setWidth] = useState<number>(1);
   const [height, setHeight] = useState<number>(1);
 
@@ -59,9 +60,6 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
     return <></>;
   }
 
-  const typeOfFilter = 1; // 0 color, 1 height
-
-
   return (
     <animated.mesh
       ref={meshRef}
@@ -85,8 +83,8 @@ function ImageMesh({base64Texture, filter, amplitude, wireframe, meshSize, meshR
         uAmplitude={amplitude}
         uFilter={filter}
         uInvertColor={invertColor}
-        uTypeOfFilter={typeOfFilter}
-        
+        uTypeOfFilter={rendering}
+
       />
       </animated.mesh>
   )

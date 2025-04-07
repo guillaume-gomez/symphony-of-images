@@ -6,6 +6,7 @@ import Card from "./Card";
 import Range from "./Range";
 import Toggle from "./Toggle";
 import ColorPicker from "./ColorPicker";
+import Select from "./Select";
 import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
 
@@ -31,6 +32,7 @@ function ThreejsRendering({
   const [background, setBackground] = useState<string>("#000000");
   const [showSettings, setShowSettings] = useState<boolean>(true);
   const [rotationY, setRotationY] = useState<boolean>(false);
+  const [rendering, setRendering] = useState<number>(0);
 
   useEffect(() => {
     if(!meshRef.current) {
@@ -82,6 +84,7 @@ function ThreejsRendering({
               meshSize={meshSize}
               filter={filter}
               invertColor={invertColor}
+              rendering={rendering}
               rotationY={rotationY}
               meshRef={meshRef}
             />
@@ -135,6 +138,15 @@ function ThreejsRendering({
               max={255}
               step={0.5}
               onChange={setFilter}
+            />
+            <Select
+              label={"Rendering"}
+              value={rendering}
+              onChange={(newRendering) => setRendering(newRendering)}
+              options={[
+                {value: 0, label: "Color"},
+                {value: 1, label: "Circle"}
+              ]}
             />
             <ColorPicker
               label="Background color"
