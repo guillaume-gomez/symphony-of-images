@@ -25,7 +25,7 @@ function ThreejsRendering({
   const cameraControlRef = useRef<CameraControls>(null);
   const [amplitude, setAmplitude] = useState<number>(0.2);
   const [filter, setFilter] = useState<number>(0.0);
-  const [meshSize, setMeshSize] = useState<number>(128);
+  const [meshSize, setMeshSize] = useState<number>(64);
   const [wireframe, setWireframe] = useState<boolean>(true);
   const [invertColor, setInvertColor] = useState<boolean>(false);
   const [background, setBackground] = useState<string>("#000000");
