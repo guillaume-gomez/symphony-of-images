@@ -40,12 +40,14 @@ function App() {
                   <AudioPermission />
                 </div>
               </div>
+              <div className="flex flex-row justify-center items-center">
+                <span>{!imageBase64 ?  "Upload an Image" : "Add sound"}</span>
+              </div>
             </Card>
             {
               !imageBase64 ? 
                 <div className="flex flex-col gap-5 items-center">
                   <span className="loading loading-bars w-16 text-primary"></span>
-                  <span>Upload an Image</span>
                 </div> :
                 <ThreeJSRendering
                   imageTexture={imageBase64}
