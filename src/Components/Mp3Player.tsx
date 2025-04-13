@@ -19,7 +19,7 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
   }
 
   return (
-    <div className="form-control flex flex-col flex-gap gap-2 border border-primary items-center rounded-xl p-2">
+    <div className="form-control flex flex-col flex-gap gap-2 border border-primary items-center rounded-md p-2">
       <input
         className="file-input file-input-xs file-input-primary rounded-md"
         type="file"
@@ -31,10 +31,11 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
         controlsList="nodownload noplaybackrate"
         className="h-10 rounded-md"
         controls
-        onPlay={() => { console.log("run play"); dispatch({type: "play" }) }}
-        onPause={() => { console.log("run play"); dispatch({type: "pause" }) }}
+        onPlay={() => { dispatch({type: "play" }) }}
+        onPause={() => { dispatch({type: "pause" }) }}
       >
       </audio>
+
     </div>
   );
 }
