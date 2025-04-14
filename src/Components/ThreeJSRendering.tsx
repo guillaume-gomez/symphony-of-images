@@ -9,6 +9,8 @@ import ColorPicker from "./ColorPicker";
 import Select from "./Select";
 import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
+import RecordScene from "./RecordScene";
+import useAudioContext from "./Reducer/useAudioContext";
 
 
 interface ThreejsRenderingProps {
@@ -21,6 +23,8 @@ function ThreejsRendering({
   } : ThreejsRenderingProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toggleFullscreen } = useFullscreen({ target: canvasRef });
+  const { state: { audio } } = useAudioContext();
+
   const meshRef = useRef<Mesh>(null);
   const maxDistance = useRef<number>(500);
   const cameraControlRef = useRef<CameraControls>(null);
@@ -168,7 +172,9 @@ function ThreejsRendering({
               onToggle={(value : boolean) => setRotationY(value)}
               value={rotationY}
             />
-          </Card></div>
+            <RecordScene canvasRef={canvasRef} audio={audio} />
+          </Card>
+        </div>
       </div>
     </div>
   );
