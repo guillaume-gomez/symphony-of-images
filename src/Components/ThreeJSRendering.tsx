@@ -98,9 +98,11 @@ function ThreejsRendering({
               maxDistance={maxDistance.current}
               ref={cameraControlRef}
             />
-          <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
-            <GizmoViewport labelColor="white" axisHeadScale={1} />
-          </GizmoHelper>
+          {import.meta.env.MODE === "development" &&
+            <GizmoHelper alignment="bottom-right" margin={[50, 50]}>
+              <GizmoViewport labelColor="white" axisHeadScale={1} />
+            </GizmoHelper>
+          }
         </Stage>
       </Canvas>
 
