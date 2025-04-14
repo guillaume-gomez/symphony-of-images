@@ -36,8 +36,8 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       audio.src = action.payload;
       audio.autoplay = false;
 
-      const analyzer = createAnalyser(audio, state.frequencySize);
-      return { ...state, typeOfPlay: "mp3", audio, analyzer }
+      //const analyzer = createAnalyser(audio, state.frequencySize);
+      return { ...state, typeOfPlay: "mp3", audio, /*analyzer*/ }
     case 'allowMic':
         if(state.audio) {
           state.audio.pause();
