@@ -22,11 +22,12 @@ function useAudioData({ onUpdate } : useAudioContextProps) {
       const emptyData = Array(frequencySize).fill(0)
       onUpdate(new Uint8Array(emptyData))
     }
-    if(!paused) {
+    if(paused === false) {
       console.log("play")
       play()
     }
-  }, [audio?.paused])
+
+  }, [audio?.paused, paused])
 
 
   function play() {
