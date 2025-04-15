@@ -43,10 +43,11 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       return { ...state, paused: true, audio: state.audio };
     case 'importMp3':
       {
+        closeAudio(state.source, state.audioContext);
+
         const audio = new Audio();
         audio.src = action.payload;
         audio.autoplay = false;
-
 
         {/* @ts-ignore: window.webkitAudioContext exist */}
         let audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -66,24 +67,32 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
         return { ...state, paused: false, typeOfPlay: 'microphone', analyzer, audioContext, source };
       }  
     case 'disableMic':
-        {/* @ts-ignore: window.localStream exist \°/ */}
-        if(window.localStream) {
-          {/* @ts-ignore: window.webkitAudioContext exist */}
-          window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
-            track.stop();
-          });
-        }
         const { source, audioContext } = state;
-        if(source) {
-          source.disconnect();
-
-        }
-        if(audioContext && audioContext.state !== "closed") {
-          audioContext.close();
-        }
+        closeMicChannels();
+        closeAudio(source, audioContext)
         return { ...state, paused: true, typeOfPlay: 'none', analyzer: null, audioContext: null, source: null };
     default:
       return state;
+  }
+}
+
+
+function closeAudio(source?: MediaElementAudioSourceNode | MediaStreamAudioSourceNode | null, audioContext?: AudioContext|null) {
+  if(source) {
+    source.disconnect();
+  }
+  if(audioContext && audioContext.state !== "closed") {
+    audioContext.close();
+  }
+}
+
+function closeMicChannels() {
+  {/* @ts-ignore: window.localStream exist \°/ */}
+  if(window.localStream) {
+    {/* @ts-ignore: window.webkitAudioContext exist */}
+    window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
+      track.stop();
+    });
   }
 }
 
