@@ -1,5 +1,5 @@
 import useAudioContext from "./Reducer/useAudioContext";
-
+import mp3 from "/mp3.svg";
 interface Mp3PlayerInterface {
 }
 
@@ -19,22 +19,25 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
   }
 
   return (
-    <div className="form-control flex flex-col flex-gap gap-2 border border-primary items-center rounded-md p-2">
-      <input
-        className="file-input file-input-xs file-input-primary rounded-md"
-        type="file"
-        onChange={handleFiles} accept="audio/*"
-      />
-      <audio
-        src={audio?.src}
-        id="audio"
-        controlsList="nodownload noplaybackrate"
-        className="h-10 rounded-md"
-        controls
-        onPlay={() => { dispatch({type: "play" }) }}
-        onPause={() => { dispatch({type: "pause" }) }}
-      >
-      </audio>
+    <div className="form-control flex flex-row flex-gap gap-2 border border-neutral bg-primary items-center rounded-md p-2">
+      <img src={mp3} />
+      <div className="flex flex-col gap-1">
+        <input
+          className="file-input file-input-xs file-input rounded-md"
+          type="file"
+          onChange={handleFiles} accept="audio/*"
+        />
+        <audio
+          src={audio?.src}
+          id="audio"
+          controlsList="nodownload noplaybackrate"
+          className="h-10 rounded-md"
+          controls
+          onPlay={() => { dispatch({type: "play" }) }}
+          onPause={() => { dispatch({type: "pause" }) }}
+        >
+        </audio>
+      </div>
 
     </div>
   );

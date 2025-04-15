@@ -49,8 +49,8 @@ function AudioPermission({} : AudioPermissionProps) {
       className={`btn rounded-md ${isPaused() ? "btn-primary" : "btn-secondary"}`}
       onClick={onClick}
     >
-      { isPaused() ? "Allow microphone" : "Turn off microphone" }
       <img src={mic} />
+      { isPaused() ? "Allow microphone" : "Turn off microphone" }
     </button>
   )
 }

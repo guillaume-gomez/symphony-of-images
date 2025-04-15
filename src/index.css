@@ -103,7 +103,7 @@ audio {
 }
 
 audio::-webkit-media-controls-enclosure {
-    background-color: var(--color-primary);
+    background-color: var(--color-base-100);
 
 }
 audio::-webkit-media-controls-play-button,
