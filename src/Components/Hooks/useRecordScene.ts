@@ -1,31 +1,32 @@
-import { RefObject, useRef, useEffect } from "react";
+import { RefObject, useRef } from "react";
+import useAudioContext from "../Reducer/useAudioContext";
 
 interface useRecordSceneParams {
 	canvasRef: RefObject<HTMLCanvasElement>
-  audioContext: AudioContext | null,
-	videoRef?: RefObject<HTMLVideoElement>
+  videoRef?: RefObject<HTMLVideoElement>
 }
 
-export default function useRecordScene ({canvasRef, audio,  videoRef} : useRecordSceneParams) {
-	const recordedBlobs = useRef<Blob[]>([]);
+export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneParams) {
+	const { state: { audio, audioContext, source } } = useAudioContext();
+  const recordedBlobs = useRef<Blob[]>([]);
   const mediaRecorder = useRef<MediaRecorder>();
   const stream = useRef<MediaStream>();
-  const audioStream = useRef<AudioStream>();
+  const audioStream = useRef<MediaStreamAudioDestinationNode>();
   
   
 	function startRecord() {
+    if(!canvasRef.current || !mediaRecorder.current) {
+      return;
+    }
+
 		recordedBlobs.current = [];
 		try {
       stream.current = canvasRef.current.captureStream();
-      if(audio) {
+      if(audio && audioContext && source) {
         {/* @ts-ignore: window.webkitAudioContext exist */}
-        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
         audioStream.current = audioContext.createMediaStreamDestination();
-        const sourceNode = audioContext.createMediaElementSource(audio);
-        
-        sourceNode.connect(audioStream.current);
-        sourceNode.connect(audioContext.destination);
-        
+        source.connect(audioStream.current);
+        //source.connect(audioContext.destination);
         stream.current.addTrack(audioStream.current.stream.getAudioTracks()[0]);
       }
 		  mediaRecorder.current = new MediaRecorder(stream.current, {mimeType: 'video/webm'});
@@ -35,28 +36,27 @@ export default function useRecordScene ({canvasRef, audio,  videoRef} : useRecor
     mediaRecorder.current.onstop = handleStop;
     mediaRecorder.current.ondataavailable = handleDataAvailable;
     mediaRecorder.current.start(100); // collect 100ms of data
-    console.log('MediaRecorder started', mediaRecorder.current);
 	}
 
-  function handleStop(event: Event) {
-    console.log('Recorder stopped: ', event);
+  function handleStop() {
     const superBuffer = new Blob(recordedBlobs.current, {type: 'video/webm'});
-    if(videoRef) {
+    if(videoRef && videoRef.current) {
     	videoRef.current.src = window.URL.createObjectURL(superBuffer);
     }
   }
 
   function stopRecord() {
+    if(!mediaRecorder.current) {
+      return;
+    }
     mediaRecorder.current.stop();
-    console.log('Recorded Blobs: ', recordedBlobs.current);
-    if(videoRef) {
+    if(videoRef && videoRef.current) {
     	videoRef.current.controls = true;
     }
   }
 
   function handleDataAvailable(event: BlobEvent) {
     if (event.data && event.data.size > 0) {
-      console.log(audioStream)
       recordedBlobs.current.push(event.data as Blob);
     }
   }

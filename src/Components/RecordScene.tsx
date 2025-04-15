@@ -1,14 +1,13 @@
-import { useRef, useEffect, RefObject } from "react";
+import { useRef, RefObject } from "react";
 import useRecordScene from "./Hooks/useRecordScene";
 
 interface RecordSceneProps {
   canvasRef: RefObject<HTMLCanvasElement>;
-  audio: HTMLAudioElement
 }
 
-function RecordScene({ canvasRef, audio }: RecordSceneProps) {
-  const videoRef = useRef<HTMLVideoElement>();
-  const { stopRecord, startRecord, download } = useRecordScene({ canvasRef, videoRef, audio });
+function RecordScene({ canvasRef }: RecordSceneProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { stopRecord, startRecord, download } = useRecordScene({ canvasRef, videoRef });
 
 	return (<div>
 			<button

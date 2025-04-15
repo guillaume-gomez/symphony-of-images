@@ -11,11 +11,21 @@ interface AppState {
   audio: null | HTMLAudioElement;
   frequencySize: number;
   analyzer: null |  AnalyserNode;
+  audioContext: null | AudioContext;
+  source: null | MediaElementAudioSourceNode
   typeOfPlay: 'mp3' | 'microphone' | 'none';
   paused: boolean;
 }
 
-const initialState : AppState = { audio: null, frequencySize: 256, analyzer: null, typeOfPlay: 'none', paused: true };
+const initialState : AppState = {
+  audio: null,
+  frequencySize: 256,
+  analyzer: null,
+  audioContext: null,
+  source: null,
+  typeOfPlay: 'none',
+  paused: true
+};
 
 function AudioReducer(state: AppState, action: AppActions) : AppState {
   switch (action.type) {
@@ -36,8 +46,15 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       audio.src = action.payload;
       audio.autoplay = false;
 
-      //const analyzer = createAnalyser(audio, state.frequencySize);
-      return { ...state, typeOfPlay: "mp3", audio, /*analyzer*/ }
+
+      {/* @ts-ignore: window.webkitAudioContext exist */}
+      let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      let analyzer = audioContext.createAnalyser();
+      let source = audioContext.createMediaElementSource(audio);
+      source.connect(analyzer);
+      analyzer.fftSize = state.frequencySize;
+
+      return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source }
     case 'allowMic':
         if(state.audio) {
           state.audio.pause();
@@ -56,20 +73,6 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       return state;
   }
 }
-
-
-function createAnalyser(audio: HTMLAudioElement, frequencySize: number) {
-    {/* @ts-ignore: window.webkitAudioContext exist */}
-    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    let analyzer = audioContext.createAnalyser();
-    let source = audioContext.createMediaElementSource(audio);
-    source.connect(analyzer);
-
-    analyzer.fftSize = frequencySize;
-    return analyzer;
-  }
-
-
 
 export const AppContext = createContext<{
   state: AppState;
