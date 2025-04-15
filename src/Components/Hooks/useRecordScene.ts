@@ -7,7 +7,7 @@ interface useRecordSceneParams {
 }
 
 export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneParams) {
-	const { state: { audio, audioContext, source } } = useAudioContext();
+	const { state: { audioContext, source } } = useAudioContext();
   const recordedBlobs = useRef<Blob[]>([]);
   const mediaRecorder = useRef<MediaRecorder>();
   const stream = useRef<MediaStream>();
@@ -15,14 +15,15 @@ export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneP
   
   
 	function startRecord() {
-    if(!canvasRef.current || !mediaRecorder.current) {
+
+    if(!canvasRef.current) {
       return;
     }
 
 		recordedBlobs.current = [];
 		try {
       stream.current = canvasRef.current.captureStream();
-      if(audio && audioContext && source) {
+      if(audioContext && source) {
         {/* @ts-ignore: window.webkitAudioContext exist */}
         audioStream.current = audioContext.createMediaStreamDestination();
         source.connect(audioStream.current);

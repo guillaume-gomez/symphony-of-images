@@ -3,7 +3,7 @@ import { useReducer, createContext, ReactNode, Dispatch } from "react";
 type Play = { type: 'play' };
 type Pause = { type: 'pause' };
 type ImportMp3 = { type: 'importMp3', payload: string }
-type AllowMicrophone = { type: 'allowMic', payload: AnalyserNode }
+type AllowMicrophone = { type: 'allowMic', payload: { analyzer: AnalyserNode, source: MediaStreamAudioSourceNode, audioContext: AudioContext } }
 type DisableMicrophone = { type: 'disableMic'};
 type AppActions = Play | Pause | ImportMp3 | AllowMicrophone | DisableMicrophone;
 
@@ -12,7 +12,7 @@ interface AppState {
   frequencySize: number;
   analyzer: null |  AnalyserNode;
   audioContext: null | AudioContext;
-  source: null | MediaElementAudioSourceNode
+  source: null | MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
   typeOfPlay: 'mp3' | 'microphone' | 'none';
   paused: boolean;
 }
@@ -42,24 +42,29 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       state.audio.pause();
       return { ...state, paused: true, audio: state.audio };
     case 'importMp3':
-      const audio = new Audio();
-      audio.src = action.payload;
-      audio.autoplay = false;
+      {
+        const audio = new Audio();
+        audio.src = action.payload;
+        audio.autoplay = false;
 
 
-      {/* @ts-ignore: window.webkitAudioContext exist */}
-      let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      let analyzer = audioContext.createAnalyser();
-      let source = audioContext.createMediaElementSource(audio);
-      source.connect(analyzer);
-      analyzer.fftSize = state.frequencySize;
+        {/* @ts-ignore: window.webkitAudioContext exist */}
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let analyzer = audioContext.createAnalyser();
+        let source = audioContext.createMediaElementSource(audio);
+        source.connect(analyzer);
+        analyzer.fftSize = state.frequencySize;
 
-      return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source }
+        return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source }
+      }
     case 'allowMic':
+      {
         if(state.audio) {
           state.audio.pause();
         }
-        return { ...state, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
+        const { analyzer, audioContext, source } = action.payload;
+        return { ...state, paused: false, typeOfPlay: 'microphone', analyzer, audioContext, source };
+      }  
     case 'disableMic':
         {/* @ts-ignore: window.localStream exist \°/ */}
         if(window.localStream) {
@@ -68,7 +73,15 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
             track.stop();
           });
         }
-        return { ...state, paused: true, typeOfPlay: 'none', analyzer: null };
+        const { source, audioContext } = state;
+        if(source) {
+          source.disconnect();
+
+        }
+        if(audioContext && audioContext.state !== "closed") {
+          audioContext.close();
+        }
+        return { ...state, paused: true, typeOfPlay: 'none', analyzer: null, audioContext: null, source: null };
     default:
       return state;
   }

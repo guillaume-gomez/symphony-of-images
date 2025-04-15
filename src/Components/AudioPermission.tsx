@@ -1,5 +1,5 @@
 import useAudioContext from "./Reducer/useAudioContext";
-
+import mic from "/mic.svg";
 
 interface AudioPermissionProps {
 }
@@ -27,7 +27,7 @@ function AudioPermission({} : AudioPermissionProps) {
         let source = audioContext.createMediaStreamSource(stream);
         source.connect(analyzer);
 
-        dispatch({ type: 'allowMic', payload: analyzer});
+        dispatch({ type: 'allowMic', payload: { analyzer, source, audioContext } });
       })
       .catch((err) => {
         console.error(`you got an error: ${err}`);
@@ -50,6 +50,7 @@ function AudioPermission({} : AudioPermissionProps) {
       onClick={onClick}
     >
       { isPaused() ? "Allow microphone" : "Turn off microphone" }
+      <img src={mic} />
     </button>
   )
 }
