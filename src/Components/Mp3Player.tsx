@@ -30,6 +30,7 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
         <audio
           src={audio?.src}
           id="audio"
+          autoPlay
           controlsList="nodownload noplaybackrate"
           className="h-10 rounded-md"
           controls

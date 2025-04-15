@@ -33,7 +33,7 @@ function InputFileWithPreview({onChange, imageBase64} : InputFileWithPreviewProp
       </label>
       {
         imageBase64 ?
-        <img src={imageBase64} style={{ minWidth: "64px", maxWidth: "100px"}}/> :
+        <img src={imageBase64} style={{ minWidth: "32px", maxWidth: "64px"}}/> :
         <span>Nothing to render</span>
 
       }

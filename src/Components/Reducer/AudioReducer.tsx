@@ -47,8 +47,8 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
 
         const audio = new Audio();
         audio.src = action.payload;
-        audio.autoplay = false;
-
+        audio.autoplay = true;
+        
         {/* @ts-ignore: window.webkitAudioContext exist */}
         let audioContext = new (window.AudioContext || window.webkitAudioContext)();
         let analyzer = audioContext.createAnalyser();
@@ -56,7 +56,7 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
         source.connect(analyzer);
         analyzer.fftSize = state.frequencySize;
 
-        return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source }
+        return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source, paused: false }
       }
     case 'allowMic':
       {

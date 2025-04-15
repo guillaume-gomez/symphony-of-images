@@ -1,18 +1,17 @@
 import { useState } from 'react';
-import AudioPermission from "./Components/AudioPermission";
 import ThreeJSRendering from "./Components/ThreeJSRendering";
-import InputFileWithPreview from "./Components/InputFileWithPreview";
-import Mp3Player from "./Components/Mp3Player";
+import SoundSettingsForm from "./Components/SoundSettingsForm";
 import Card from "./Components/Card";
-import BadgeTitle from "./Components/BadgeTitle";
 import AppContextProvider from "./Components/Reducer/AudioReducer";
 
 function App() {
   const [imageBase64, setImageBase64] = useState<string|null>(null);
-
+  const [showRendering, setShowRendering] = useState<boolean>(false);
+  // todo fix animation on the setting in the three js
   
-  function onChange(imageBase64: string) {
+  function onSubmit(imageBase64: string) {
     setImageBase64(imageBase64);
+    setShowRendering(true);
   }
 
   return (
@@ -22,40 +21,15 @@ function App() {
         <AppContextProvider>
           <div className="flex flex-col gap-5">
             <Card title="Sound settings">
-              <div className="flex flex-row">
-                <div role="alert" className="alert alert-info alert-outline w-full">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="h-6 w-6 shrink-0 stroke-current">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  <span>{!imageBase64 ?  "Upload an Image" : "Then, add sound or enable microphone"}.</span>
-                </div>
-              </div>
-              <div className="flex w-full flex-col lg:flex-row">
-                <div className="card rounded-box grid h-44 grow place-items-center lg:w-6/12" style={{background: "var(--color-base-400)"}}>
-                  <BadgeTitle number={1} text={"Upload an image"} />
-                  <InputFileWithPreview
-                    onChange={onChange}
-                    imageBase64={imageBase64}
-                  />
-
-                </div>
-                <div className="divider lg:divider-horizontal">
-                  <div className="badge badge-primary badge-md rounded">Then</div>
-                </div>
-                <div className="card rounded-box grid h-44 grow place-items-center lg:w-6/12 p-2" style={{background: "var(--color-base-400)"}}>
-                  <BadgeTitle number={2} text={"Upload mp3 file or enable microphone"} />
-                  <Mp3Player />
-                  <AudioPermission />
-                </div>
-              </div>
+              <SoundSettingsForm onSubmit={onSubmit} />
             </Card>
             {
-              !imageBase64 ? 
+              !showRendering && !imageBase64 ? 
                 <div className="flex flex-col gap-5 items-center">
                   <span className="loading loading-bars w-16 text-primary"></span>
                 </div> :
                 <ThreeJSRendering
-                  imageTexture={imageBase64}
+                  imageTexture={imageBase64 as string}
                 />
             }
           </div>

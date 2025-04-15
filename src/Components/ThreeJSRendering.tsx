@@ -23,7 +23,7 @@ function ThreejsRendering({
   const meshRef = useRef<Mesh>(null);
   const maxDistance = useRef<number>(500);
   const cameraControlRef = useRef<CameraControls>(null);
-  const [amplitude, setAmplitude] = useState<number>(0.2);
+  const [amplitude, setAmplitude] = useState<number>(0.25);
   const [filter, setFilter] = useState<number>(0.0);
   const [meshSize, setMeshSize] = useState<number>(64);
   const [wireframe, setWireframe] = useState<boolean>(true);
@@ -37,6 +37,7 @@ function ThreejsRendering({
     if(!meshRef.current) {
       return;
     }
+    
     centerCamera(meshRef.current)
   }, [imageTexture, meshRef])
 
@@ -48,8 +49,9 @@ function ThreejsRendering({
         0,0, 0,
         false
       );
+
       await cameraControlRef.current.fitToBox(mesh, true,
-        { paddingLeft: 1, paddingRight: 1, paddingBottom: 1, paddingTop: 1 }
+        { paddingLeft: 0.5, paddingRight: 0.5, paddingBottom: 0.5, paddingTop: 0.5 }
       );
       let distanceCamera = new Vector3();
       cameraControlRef.current.getPosition(distanceCamera, false);
