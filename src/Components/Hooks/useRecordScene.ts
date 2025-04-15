@@ -31,12 +31,12 @@ export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneP
         stream.current.addTrack(audioStream.current.stream.getAudioTracks()[0]);
       }
 		  mediaRecorder.current = new MediaRecorder(stream.current, {mimeType: 'video/webm'});
+      mediaRecorder.current.onstop = handleStop;
+      mediaRecorder.current.ondataavailable = handleDataAvailable;
+      mediaRecorder.current.start(100); // collect 100ms of data
 		} catch (e0) {
       console.error('Unable to create MediaRecorder with options Object: ', e0);
     }
-    mediaRecorder.current.onstop = handleStop;
-    mediaRecorder.current.ondataavailable = handleDataAvailable;
-    mediaRecorder.current.start(100); // collect 100ms of data
 	}
 
   function handleStop() {
