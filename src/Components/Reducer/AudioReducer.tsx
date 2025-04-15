@@ -3,7 +3,7 @@ import { useReducer, createContext, ReactNode, Dispatch } from "react";
 type Play = { type: 'play' };
 type Pause = { type: 'pause' };
 type ImportMp3 = { type: 'importMp3', payload: string }
-type AllowMicrophone = { type: 'allowMic', payload: AnalyserNode }
+type AllowMicrophone = { type: 'allowMic', payload: { analyzer: AnalyserNode, source: MediaStreamAudioSourceNode, audioContext: AudioContext } }
 type DisableMicrophone = { type: 'disableMic'};
 type AppActions = Play | Pause | ImportMp3 | AllowMicrophone | DisableMicrophone;
 
@@ -11,11 +11,21 @@ interface AppState {
   audio: null | HTMLAudioElement;
   frequencySize: number;
   analyzer: null |  AnalyserNode;
+  audioContext: null | AudioContext;
+  source: null | MediaElementAudioSourceNode | MediaStreamAudioSourceNode;
   typeOfPlay: 'mp3' | 'microphone' | 'none';
   paused: boolean;
 }
 
-const initialState : AppState = { audio: null, frequencySize: 256, analyzer: null, typeOfPlay: 'none', paused: true };
+const initialState : AppState = {
+  audio: null,
+  frequencySize: 256,
+  analyzer: null,
+  audioContext: null,
+  source: null,
+  typeOfPlay: 'none',
+  paused: true
+};
 
 function AudioReducer(state: AppState, action: AppActions) : AppState {
   switch (action.type) {
@@ -32,44 +42,59 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       state.audio.pause();
       return { ...state, paused: true, audio: state.audio };
     case 'importMp3':
-      const audio = new Audio();
-      audio.src = action.payload;
-      audio.autoplay = false;
+      {
+        closeAudio(state.source, state.audioContext);
 
-      const analyzer = createAnalyser(audio, state.frequencySize);
-      return { ...state, typeOfPlay: "mp3", audio, analyzer }
+        const audio = new Audio();
+        audio.src = action.payload;
+        audio.autoplay = false;
+
+        {/* @ts-ignore: window.webkitAudioContext exist */}
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let analyzer = audioContext.createAnalyser();
+        let source = audioContext.createMediaElementSource(audio);
+        source.connect(analyzer);
+        analyzer.fftSize = state.frequencySize;
+
+        return { ...state, typeOfPlay: "mp3", audio, analyzer, audioContext, source }
+      }
     case 'allowMic':
+      {
         if(state.audio) {
           state.audio.pause();
         }
-        return { ...state, paused: false, typeOfPlay: 'microphone', analyzer: action.payload };
+        const { analyzer, audioContext, source } = action.payload;
+        return { ...state, paused: false, typeOfPlay: 'microphone', analyzer, audioContext, source };
+      }  
     case 'disableMic':
-        {/* @ts-ignore: window.localStream exist \°/ */}
-        if(window.localStream) {
-          {/* @ts-ignore: window.webkitAudioContext exist */}
-          window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
-            track.stop();
-          });
-        }
-        return { ...state, paused: true, typeOfPlay: 'none', analyzer: null };
+        const { source, audioContext } = state;
+        closeMicChannels();
+        closeAudio(source, audioContext)
+        return { ...state, paused: true, typeOfPlay: 'none', analyzer: null, audioContext: null, source: null };
     default:
       return state;
   }
 }
 
 
-function createAnalyser(audio: HTMLAudioElement, frequencySize: number) {
-    {/* @ts-ignore: window.webkitAudioContext exist */}
-    let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    let analyzer = audioContext.createAnalyser();
-    let source = audioContext.createMediaElementSource(audio);
-    source.connect(analyzer);
-
-    analyzer.fftSize = frequencySize;
-    return analyzer;
+function closeAudio(source?: MediaElementAudioSourceNode | MediaStreamAudioSourceNode | null, audioContext?: AudioContext|null) {
+  if(source) {
+    source.disconnect();
   }
+  if(audioContext && audioContext.state !== "closed") {
+    audioContext.close();
+  }
+}
 
-
+function closeMicChannels() {
+  {/* @ts-ignore: window.localStream exist \°/ */}
+  if(window.localStream) {
+    {/* @ts-ignore: window.webkitAudioContext exist */}
+    window.localStream.getAudioTracks().forEach((track: MediaStreamTrack) => {
+      track.stop();
+    });
+  }
+}
 
 export const AppContext = createContext<{
   state: AppState;

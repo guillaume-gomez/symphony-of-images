@@ -9,12 +9,11 @@ import ColorPicker from "./ColorPicker";
 import Select from "./Select";
 import { Stage, CameraControls,  GizmoHelper, GizmoViewport } from '@react-three/drei';
 import ImageMesh from "./ImageMesh";
-
+import RecordScene from "./RecordScene";
 
 interface ThreejsRenderingProps {
   imageTexture: string;
 }
-
 
 function ThreejsRendering({
     imageTexture,
@@ -170,7 +169,9 @@ function ThreejsRendering({
               onToggle={(value : boolean) => setRotationY(value)}
               value={rotationY}
             />
-          </Card></div>
+            <RecordScene canvasRef={canvasRef} />
+          </Card>
+        </div>
       </div>
     </div>
   );
