@@ -1,4 +1,4 @@
-import { RefObject, useRef } from "react";
+import { RefObject, useRef, useState } from "react";
 import useAudioContext from "../Reducer/useAudioContext";
 
 interface useRecordSceneParams {
@@ -12,6 +12,7 @@ export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneP
   const mediaRecorder = useRef<MediaRecorder>();
   const stream = useRef<MediaStream>();
   const audioStream = useRef<MediaStreamAudioDestinationNode>();
+  const [isRecording, setIsRecording] = useState<boolean>(false);
   
   
 	function startRecord() {
@@ -34,6 +35,7 @@ export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneP
       mediaRecorder.current.onstop = handleStop;
       mediaRecorder.current.ondataavailable = handleDataAvailable;
       mediaRecorder.current.start(100); // collect 100ms of data
+      setIsRecording(true);
 		} catch (e0) {
       console.error('Unable to create MediaRecorder with options Object: ', e0);
     }
@@ -51,6 +53,7 @@ export default function useRecordScene ({canvasRef,  videoRef} : useRecordSceneP
       return;
     }
     mediaRecorder.current.stop();
+    setIsRecording(false);
     if(videoRef && videoRef.current) {
     	videoRef.current.controls = true;
     }
@@ -77,5 +80,5 @@ function download() {
     }, 100);
 	}
 
-  return { stopRecord, startRecord, download };
+  return { stopRecord, startRecord, download, isRecording };
 }
