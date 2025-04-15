@@ -2,6 +2,7 @@ import { RefObject } from "react";
 import useRecordScene from "./Hooks/useRecordScene";
 import PlaySVG from "../CustomSVG/play.svg";
 import StopSVG from "../CustomSVG/stop.svg";
+import SaveSVG from "../CustomSVG/save.svg";
 
 interface RecordSceneProps {
   canvasRef: RefObject<HTMLCanvasElement>;
@@ -12,29 +13,21 @@ function RecordScene({ canvasRef }: RecordSceneProps) {
   const { stopRecord, startRecord, download, isRecording } = useRecordScene({ canvasRef, /*videoRef*/ });
 
 	return (
-			<div className="join btn-xs">
+			<div className="join">
 				<button
-					className="btn btn-outline btn-primary join-item"
-					disabled={isRecording}
-					onClick={startRecord}
+					className={`btn-sm btn btn-outline join-item ${isRecording ? 'btn-accent' : 'btn-primary'} `}
+					onClick={ !isRecording ? startRecord : stopRecord }
 				>
-					Record
-					<PlaySVG />
-				</button>
-				<button
-					className="btn btn-outline btn-accent  join-item"
-					disabled={!isRecording}
-					onClick={stopRecord}
-				>
-					Stop
-					<StopSVG  />
+					{ isRecording ? "Stop" : "Record" }
+					{ isRecording ? <StopSVG  /> : <PlaySVG /> }
 				</button>
 	      <button
-	      	className="btn btn-outline join-item"
+	      	className="btn-sm btn btn-outline join-item btn-secondary"
 	      	disabled={isRecording}
 	      	onClick={download}
 	      >
 	      	Save
+	      	<SaveSVG />
 	      </button>
       	{/*<video ref={videoRef} playsInline style={{ width: 200, height: 100}}/>*/}
 	     </div>

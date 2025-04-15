@@ -17,7 +17,25 @@
 
 @layer base {
   html {
-    font-family: 'Mokoto', sans-serif;
+    font-family: 'Mokoto', Arial;
+  }
+
+  #expand-settings {
+    //border-bottom: 1px solid red;
+    transform: scaleY(0);
+    transform-origin: top;
+    height: auto;
+    display: none;
+    transition: all 0.5s;
+
+  }
+
+  #expand-settings.expanded {
+    //background-color: green;
+    transform-origin: top;
+    height: auto;
+    display: block;
+    transform: scaleY(1);
   }
 }
 
@@ -38,7 +56,7 @@
     }
   }
   --font-size: 1rem;
-  --font-title: 'Neuropol', sans-serif;
+  --font-title: 'Neuropol', Arial;
 
 }
 
@@ -50,13 +68,14 @@
   --color-base-100: oklch(14% 0.004 49.25);
   --color-base-200: oklch(21% 0.006 56.043);
   --color-base-300: oklch(26% 0.007 34.298);
+  --color-base-400: oklch(30% 0.007 34.298);
   --color-base-content: oklch(97% 0.001 106.424);
   --color-primary: oklch(64% 0.246 16.439);
   --color-primary-content: oklch(26% 0.079 36.259);
-  --color-secondary: oklch(25% 0.09 281.288);
-  --color-secondary-content: oklch(98% 0.002 247.839);
-  --color-accent: oklch(54% 0.245 262.881);
-  --color-accent-content: oklch(97% 0.014 254.604);
+  --color-secondary: oklch(54% 0.245 262.881);
+  --color-secondary-content: oklch(97% 0.014 254.604);
+  --color-accent: oklch(0.9 0.1834 99.12);
+  --color-accent-content: oklch(12% 0.042 264.695);
   --color-neutral: oklch(14% 0.004 49.25);
   --color-neutral-content: oklch(98% 0.001 106.423);
   --color-info: oklch(70% 0.165 254.624);
@@ -75,4 +94,21 @@
   --border: 2px;
   --depth: 1;
   --noise: 0;
+}
+
+audio {
+  font-size: 4rem;
+  width: 100%;
+  min-width: 150px;
+}
+
+audio::-webkit-media-controls-enclosure {
+    background-color: var(--color-primary);
+
+}
+audio::-webkit-media-controls-play-button,
+audio::-webkit-media-controls-mute-button,
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+  font-family: 'Mokoto', Arial;
 }
