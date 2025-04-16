@@ -25,17 +25,17 @@
     transform: scaleY(0);
     transform-origin: top;
     height: auto;
-    display: none;
-    transition: all 0.5s;
+    max-height: 0;
+    transition: transform 0.5s ease-in-out 0s;
 
   }
 
   #expand-settings.expanded {
     //background-color: green;
+    transform: scaleY(1);
     transform-origin: top;
     height: auto;
-    display: block;
-    transform: scaleY(1);
+    max-height: inherit;
   }
 }
 
@@ -57,6 +57,13 @@
   }
   --font-size: 1rem;
   --font-title: 'Neuropol', Arial;
+
+
+  @keyframes settings-scene {
+    from {background-color: red;}
+    to {background-color: yellow;}
+  }
+
 
 }
 
