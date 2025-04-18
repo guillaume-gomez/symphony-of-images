@@ -16,8 +16,8 @@ function App() {
 
   return (
     <div className="animate-gradient bg-[length:200%_200%] min-h-screen h-full bg-radial-[at_50%_50%] from-zinc-700 to-zinc-900 to-55%">
-      <div className="container m-auto flex flex-col gap-5">
-        <h1 className="p-2 text-4xl font-title">Symphony of Images</h1>
+      <div className="container m-auto flex flex-col gap-5 lg:p-2 p-4">
+        <h1 className="py-2 text-4xl font-title">Symphony of Images</h1>
         <AppContextProvider>
           <div className="flex flex-col gap-5">
             <Card title="Sound settings">
