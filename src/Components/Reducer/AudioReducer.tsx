@@ -2,10 +2,11 @@ import { useReducer, createContext, ReactNode, Dispatch } from "react";
 
 type Play = { type: 'play' };
 type Pause = { type: 'pause' };
+type Seeked = { type: 'seeked', payload: number };
 type ImportMp3 = { type: 'importMp3', payload: string }
 type AllowMicrophone = { type: 'allowMic', payload: { analyzer: AnalyserNode, source: MediaStreamAudioSourceNode, audioContext: AudioContext } }
 type DisableMicrophone = { type: 'disableMic'};
-type AppActions = Play | Pause | ImportMp3 | AllowMicrophone | DisableMicrophone;
+type AppActions = Play | Pause | Seeked | ImportMp3 | AllowMicrophone | DisableMicrophone;
 
 interface AppState {
   audio: null | HTMLAudioElement;
@@ -41,6 +42,12 @@ function AudioReducer(state: AppState, action: AppActions) : AppState {
       }
       state.audio.pause();
       return { ...state, paused: true, audio: state.audio };
+    case 'seeked':
+      if(!state.audio) {
+        return state;
+      }
+      state.audio.currentTime = action.payload;
+      return { ...state, audio: state.audio };
     case 'importMp3':
       {
         closeAudio(state.source, state.audioContext);

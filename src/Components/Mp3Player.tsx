@@ -34,8 +34,12 @@ function Mp3Player({ } : Mp3PlayerInterface): React.ReactElement {
           controlsList="nodownload noplaybackrate"
           className="h-10 rounded-md"
           controls
-          onPlay={() => { dispatch({type: "play" }) }}
-          onPause={() => { dispatch({type: "pause" }) }}
+          onSeeked={(event) => {
+            const target = event.target as HTMLAudioElement;
+            dispatch({ type: "seeked", payload: target.currentTime })
+          }}
+          onPlay={() => { console.log("play");dispatch({type: "play" }) }}
+          onPause={() => { console.log("pause");dispatch({type: "pause" }) }}
         >
         </audio>
       </div>
