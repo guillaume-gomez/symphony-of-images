@@ -15,7 +15,7 @@ function useAudioData({ onUpdate } : useAudioContextProps) {
 
   useEffect(() => {
     if(paused && animationRef.current) {
-      console.log("paused")
+      //console.log("paused")
       cancelAnimationFrame(animationRef.current);
 
       // send 0 de get back to original image
@@ -23,7 +23,7 @@ function useAudioData({ onUpdate } : useAudioContextProps) {
       onUpdate(new Uint8Array(emptyData))
     }
     if(paused === false) {
-      console.log("play")
+      //console.log("play")
       play()
     }
 
