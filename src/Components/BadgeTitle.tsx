@@ -6,7 +6,7 @@ interface BadgeTitleProps {
 
 function BadgeTitle({text, number}: BadgeTitleProps) {
 	return (
-			<h2 className="text-lg font-bold flex flex-row gap-1 italic items-center">
+			<h2 className="lg:text-lg font-bold flex flex-row gap-1 italic items-center">
 				<div className="badge badge-primary badge-lg rounded">{number}</div>
 				{text}
 			</h2>
